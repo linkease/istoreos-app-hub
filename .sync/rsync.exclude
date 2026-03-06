@@ -1,0 +1,17 @@
+.git
+.DS_Store
+.idea
+.vscode
+node_modules
+
+# Common build/output dirs
+bin
+dist
+build
+out
+target
+
+# Python/Go cache
+__pycache__
+*.pyc
+

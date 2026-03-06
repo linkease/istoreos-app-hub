@@ -1,0 +1,16 @@
+name: "syncapps-app"
+description: "Sync one app (requires env APP; optional SLOT, DIRECTION, DRY=1, DELETE=1)"
+tags: ["syncapps", "sync"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - >-
+      bash -ceu '[[ -n "${APP:-}" ]] || { echo "APP is required (e.g. APP=istorepanel)"; exit 2; };
+      args=(syncapps-app "APP=${APP}");
+      [[ -n "${SLOT:-}" ]] && args+=("SLOT=${SLOT}");
+      [[ -n "${DIRECTION:-}" ]] && args+=("DIRECTION=${DIRECTION}");
+      [[ "${DRY:-}" == "1" ]] && args+=("DRY=1");
+      [[ "${DELETE:-}" == "1" ]] && args+=("DELETE=1");
+      make "${args[@]}"'

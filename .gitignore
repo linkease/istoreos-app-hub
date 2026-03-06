@@ -1,0 +1,7 @@
+bin/
+.sync-state/
+.it-runner/logs/
+.it-runner/cache/
+.it-runner/states/
+.it-runner/envs/secrets.env
+.it-runner/tasks/**/task.local.yaml

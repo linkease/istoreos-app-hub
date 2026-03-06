@@ -1,0 +1,9 @@
+name: "build-syncapps-autogen"
+description: "Build syncapps-autogen binary to bin/"
+tags: ["build", "syncapps"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make build-syncapps-autogen"

@@ -1,0 +1,9 @@
+name: "syncapps-all"
+description: "Sync all configured apps (bidirectional, mtime wins; no delete by default)"
+tags: ["syncapps", "sync"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make syncapps-all"

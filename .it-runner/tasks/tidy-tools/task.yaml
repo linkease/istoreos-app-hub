@@ -1,0 +1,9 @@
+name: "tidy-tools"
+description: "Run go mod tidy in tools/"
+tags: ["dev", "go"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make tidy-tools"

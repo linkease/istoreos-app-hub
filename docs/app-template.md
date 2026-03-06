@@ -8,19 +8,14 @@
 
 ```text
 apps/<app-name>/
-├── services/
-│   └── <service-pkg>/
-├── luci/
-│   └── <luci-pkg>/
-└── meta/
-    └── <meta-pkg>/
+├── <services-pkg>/
+├── <luci-pkg>/
+└── <meta-pkg>/
 ```
 
 说明：
 
-- 三个一级子目录固定为：`services`、`luci`、`meta`。
-- 每个子目录下放“包目录”（可 0 个、1 个或多个）。
-- 同步脚本按“包目录”粒度 rsync，不按 `<app-name>` 整体镜像。
+- `apps/<app-name>/` 下直接放“包目录”（目录名保持与 legacy 一致，例如 `luci-app-*`、`app-meta-*`），同步时不会改名。
 
 ## 2. 命名建议
 
@@ -35,42 +30,35 @@ apps/<app-name>/
 
 ```bash
 APP=app-foo
-mkdir -p apps/${APP}/{services,luci,meta}
+mkdir -p apps/${APP}
 
 # 下面是示例包名，按实际项目替换
-mkdir -p apps/${APP}/services/foo-service
-mkdir -p apps/${APP}/luci/luci-app-foo
-mkdir -p apps/${APP}/meta/app-meta-foo
+mkdir -p apps/${APP}/foo-service
+mkdir -p apps/${APP}/luci-app-foo
+mkdir -p apps/${APP}/app-meta-foo
 ```
 
 ## 4. 同步流程
 
-### hub -> legacy（发布主流程）
+### 生成映射与同步（推荐）
 
 ```bash
-# 先预演
-scripts/sync-to-legacy.sh --app app-foo --dry-run
+# 自动扫描 legacy 并生成/补全 syncapps.yaml
+make syncapps-autogen
 
-# 再正式同步
-scripts/sync-to-legacy.sh --app app-foo
-```
+# 预演（不写入）
+make syncapps-app APP=app-foo DRY=1
 
-### legacy -> hub（补录/回灌）
-
-```bash
-# 先预演
-scripts/sync-from-legacy.sh --app app-foo --dry-run
-
-# 再正式回灌
-scripts/sync-from-legacy.sh --app app-foo
+# 正式同步
+make syncapps-app APP=app-foo
 ```
 
 ## 5. 提交前检查清单
 
 - `apps/<app-name>/services|luci|meta` 结构完整。
 - 包目录命名与 legacy 保持一致。
-- 已执行 `--dry-run`，确认影响范围符合预期。
-- 确认是否需要 `--no-delete`（保守模式）。
+- 已执行 `DRY=1` 预演，确认影响范围符合预期。
+- 确认是否需要 `DELETE=1`（传播删除，危险）。
 
 ## 6. AI 协作模板
 
@@ -79,7 +67,7 @@ scripts/sync-from-legacy.sh --app app-foo
 ```text
 请在 apps/<app-name>/ 内修改，保持 services/luci/meta 聚合结构。
 修改后给出：
-1) sync-to-legacy 的 dry-run 命令
+1) `make syncapps-app APP=<app-name> DRY=1` 的输出摘要
 2) 实际会影响的 legacy 目录列表
-3) 是否需要 --no-delete 的建议
+3) 是否需要 `DELETE=1` 的建议
 ```

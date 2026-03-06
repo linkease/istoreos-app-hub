@@ -1,0 +1,9 @@
+name: "syncapps-list"
+description: "List apps configured in syncapps.yaml"
+tags: ["syncapps", "sync"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make syncapps-list"

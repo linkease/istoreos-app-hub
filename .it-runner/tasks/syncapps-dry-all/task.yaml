@@ -1,0 +1,9 @@
+name: "syncapps-dry-all"
+description: "Dry-run sync all configured apps"
+tags: ["syncapps", "sync"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make syncapps-dry-all"

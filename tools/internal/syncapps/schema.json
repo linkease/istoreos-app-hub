@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "syncapps.yaml",
+  "type": "object",
+  "required": ["version", "apps_root", "apps"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "legacy_root": { "type": "string" },
+    "apps_root": { "type": "string" },
+    "rsync": {
+      "type": "object",
+      "properties": {
+        "bin": { "type": "string" },
+        "excludes": { "type": "array", "items": { "type": "string" } },
+        "exclude_files": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "apps": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "services": { "$ref": "#/$defs/pairs" },
+          "luci": { "$ref": "#/$defs/pairs" },
+          "meta": { "$ref": "#/$defs/pairs" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["local", "remote"],
+        "properties": {
+          "local": { "type": "string" },
+          "remote": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

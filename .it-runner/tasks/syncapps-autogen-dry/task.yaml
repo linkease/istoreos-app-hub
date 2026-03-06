@@ -1,0 +1,9 @@
+name: "syncapps-autogen-dry"
+description: "Dry-run autogen (print summary, do not write syncapps.yaml)"
+tags: ["syncapps", "sync"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make syncapps-autogen-dry"

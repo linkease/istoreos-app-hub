@@ -1,0 +1,9 @@
+name: "syncapps-autogen"
+description: "Scan legacy repos and update syncapps.yaml"
+tags: ["syncapps", "sync"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make syncapps-autogen"

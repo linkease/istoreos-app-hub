@@ -1,0 +1,9 @@
+name: "tools-test"
+description: "Run Go tests for tools/"
+tags: ["test", "go"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "go -C tools test ./..."

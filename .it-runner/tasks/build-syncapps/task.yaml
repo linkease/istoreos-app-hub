@@ -1,0 +1,9 @@
+name: "build-syncapps"
+description: "Build syncapps binary to bin/"
+tags: ["build", "syncapps"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make build-syncapps"

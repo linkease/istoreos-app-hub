@@ -1,0 +1,588 @@
+version: 1
+# legacy_root 为空/未设置时，会回退使用环境变量 LEGACY_ROOT
+legacy_root: ""
+apps_root: apps
+rsync:
+    bin: rsync
+    excludes:
+        - .git
+        - .DS_Store
+        - .idea
+        - .vscode
+        - node_modules
+    exclude_files: []
+apps:
+    airconnect:
+        services:
+            - local: apps/airconnect/airconnect
+              remote: openwrt-app-actions/applications/airconnect
+        luci:
+            - local: apps/airconnect/luci-app-airconnect
+              remote: openwrt-app-actions/applications/luci-app-airconnect
+        meta:
+            - local: apps/airconnect/app-meta-airconnect
+              remote: openwrt-app-meta/applications/app-meta-airconnect
+    ap-modem:
+        services: []
+        luci:
+            - local: apps/ap-modem/luci-app-ap-modem
+              remote: openwrt-app-actions/applications/luci-app-ap-modem
+        meta:
+            - local: apps/ap-modem/app-meta-ap-modem
+              remote: openwrt-app-meta/applications/app-meta-ap-modem
+    arcadia:
+        services: []
+        luci:
+            - local: apps/arcadia/luci-app-arcadia
+              remote: openwrt-app-actions/applications/luci-app-arcadia
+        meta:
+            - local: apps/arcadia/app-meta-arcadia
+              remote: openwrt-app-meta/applications/app-meta-arcadia
+    chinesesubfinder:
+        services: []
+        luci:
+            - local: apps/chinesesubfinder/luci-app-chinesesubfinder
+              remote: openwrt-app-actions/applications/luci-app-chinesesubfinder
+        meta:
+            - local: apps/chinesesubfinder/app-meta-chinesesubfinder
+              remote: openwrt-app-meta/applications/app-meta-chinesesubfinder
+    clouddrive2:
+        services: []
+        luci:
+            - local: apps/clouddrive2/luci-app-clouddrive2
+              remote: openwrt-app-actions/applications/luci-app-clouddrive2
+        meta:
+            - local: apps/clouddrive2/app-meta-clouddrive2
+              remote: openwrt-app-meta/applications/app-meta-clouddrive2
+    codeserver:
+        services: []
+        luci:
+            - local: apps/codeserver/luci-app-codeserver
+              remote: openwrt-app-actions/applications/luci-app-codeserver
+        meta:
+            - local: apps/codeserver/app-meta-codeserver
+              remote: openwrt-app-meta/applications/app-meta-codeserver
+    ddnsto:
+        services:
+            - local: apps/ddnsto/ddnsto
+              remote: nas-packages/network/services/ddnsto
+        luci:
+            - local: apps/ddnsto/luci-app-ddnsto
+              remote: nas-packages-luci/luci/luci-app-ddnsto
+        meta:
+            - local: apps/ddnsto/app-meta-ddnsto
+              remote: openwrt-app-meta/applications/app-meta-ddnsto
+    demon:
+        services: []
+        luci:
+            - local: apps/demon/luci-app-demon
+              remote: openwrt-app-actions/applications/luci-app-demon
+        meta:
+            - local: apps/demon/app-meta-demon
+              remote: openwrt-app-meta/applications/app-meta-demon
+    docker-lan-bridge:
+        services:
+            - local: apps/docker-lan-bridge/docker-lan-bridge
+              remote: openwrt-app-actions/applications/docker-lan-bridge
+        luci: []
+        meta: []
+    dpanel:
+        services: []
+        luci:
+            - local: apps/dpanel/luci-app-dpanel
+              remote: openwrt-app-actions/applications/luci-app-dpanel
+        meta:
+            - local: apps/dpanel/app-meta-dpanel
+              remote: openwrt-app-meta/applications/app-meta-dpanel
+    drawio:
+        services: []
+        luci:
+            - local: apps/drawio/luci-app-drawio
+              remote: openwrt-app-actions/applications/luci-app-drawio
+        meta:
+            - local: apps/drawio/app-meta-drawio
+              remote: openwrt-app-meta/applications/app-meta-drawio
+    emby:
+        services: []
+        luci:
+            - local: apps/emby/luci-app-emby
+              remote: openwrt-app-actions/applications/luci-app-emby
+        meta:
+            - local: apps/emby/app-meta-emby
+              remote: openwrt-app-meta/applications/app-meta-emby
+    excalidraw:
+        services: []
+        luci:
+            - local: apps/excalidraw/luci-app-excalidraw
+              remote: openwrt-app-actions/applications/luci-app-excalidraw
+        meta:
+            - local: apps/excalidraw/app-meta-excalidraw
+              remote: openwrt-app-meta/applications/app-meta-excalidraw
+    fail2banop:
+        services:
+            - local: apps/fail2banop/fail2banop
+              remote: openwrt-app-actions/applications/fail2banop
+        luci: []
+        meta: []
+    fastnet:
+        services:
+            - local: apps/fastnet/fastnet
+              remote: nas-packages/network/services/fastnet
+        luci:
+            - local: apps/fastnet/luci-app-fastnet
+              remote: openwrt-app-actions/applications/luci-app-fastnet
+        meta:
+            - local: apps/fastnet/app-meta-fastnet
+              remote: openwrt-app-meta/applications/app-meta-fastnet
+    feishuvpn:
+        services: []
+        luci:
+            - local: apps/feishuvpn/luci-app-feishuvpn
+              remote: openwrt-app-actions/applications/luci-app-feishuvpn
+        meta: []
+    floatip:
+        services:
+            - local: apps/floatip/floatip
+              remote: nas-packages/network/services/floatip
+        luci:
+            - local: apps/floatip/luci-app-floatip
+              remote: nas-packages-luci/luci/luci-app-floatip
+        meta:
+            - local: apps/floatip/app-meta-floatip
+              remote: openwrt-app-meta/applications/app-meta-floatip
+    gogs:
+        services: []
+        luci:
+            - local: apps/gogs/luci-app-gogs
+              remote: openwrt-app-actions/applications/luci-app-gogs
+        meta:
+            - local: apps/gogs/app-meta-gogs
+              remote: openwrt-app-meta/applications/app-meta-gogs
+    heimdall:
+        services: []
+        luci:
+            - local: apps/heimdall/luci-app-heimdall
+              remote: openwrt-app-actions/applications/luci-app-heimdall
+        meta:
+            - local: apps/heimdall/app-meta-heimdall
+              remote: openwrt-app-meta/applications/app-meta-heimdall
+    homeassistant:
+        services: []
+        luci:
+            - local: apps/homeassistant/luci-app-homeassistant
+              remote: openwrt-app-actions/applications/luci-app-homeassistant
+        meta:
+            - local: apps/homeassistant/app-meta-homeassistant
+              remote: openwrt-app-meta/applications/app-meta-homeassistant
+    htreader:
+        services: []
+        luci:
+            - local: apps/htreader/luci-app-htreader
+              remote: openwrt-app-actions/applications/luci-app-htreader
+        meta:
+            - local: apps/htreader/app-meta-htreader
+              remote: openwrt-app-meta/applications/app-meta-htreader
+    immich:
+        services: []
+        luci:
+            - local: apps/immich/luci-app-immich
+              remote: openwrt-app-actions/applications/luci-app-immich
+        meta:
+            - local: apps/immich/app-meta-immich
+              remote: openwrt-app-meta/applications/app-meta-immich
+    istoredup:
+        services: []
+        luci:
+            - local: apps/istoredup/luci-app-istoredup
+              remote: openwrt-app-actions/applications/luci-app-istoredup
+        meta:
+            - local: apps/istoredup/app-meta-istoredup
+              remote: openwrt-app-meta/applications/app-meta-istoredup
+    istoreenhance:
+        services:
+            - local: apps/istoreenhance/istoreenhance
+              remote: nas-packages/network/services/istoreenhance
+        luci:
+            - local: apps/istoreenhance/luci-app-istoreenhance
+              remote: nas-packages-luci/luci/luci-app-istoreenhance
+        meta:
+            - local: apps/istoreenhance/app-meta-istoreenhance
+              remote: openwrt-app-meta/applications/app-meta-istoreenhance
+    istorepanel:
+        services: []
+        luci:
+            - local: apps/istorepanel/luci-app-istorepanel
+              remote: openwrt-app-actions/applications/luci-app-istorepanel
+        meta:
+            - local: apps/istorepanel/app-meta-istorepanel
+              remote: openwrt-app-meta/applications/app-meta-istorepanel
+    istorex:
+        services: []
+        luci:
+            - local: apps/istorex/luci-app-istorex
+              remote: nas-packages-luci/luci/luci-app-istorex
+        meta:
+            - local: apps/istorex/app-meta-istorex
+              remote: openwrt-app-meta/applications/app-meta-istorex
+    ittools:
+        services: []
+        luci:
+            - local: apps/ittools/luci-app-ittools
+              remote: openwrt-app-actions/applications/luci-app-ittools
+        meta:
+            - local: apps/ittools/app-meta-ittools
+              remote: openwrt-app-meta/applications/app-meta-ittools
+    jackett:
+        services: []
+        luci:
+            - local: apps/jackett/luci-app-jackett
+              remote: openwrt-app-actions/applications/luci-app-jackett
+        meta:
+            - local: apps/jackett/app-meta-jackett
+              remote: openwrt-app-meta/applications/app-meta-jackett
+    jellyfin:
+        services: []
+        luci:
+            - local: apps/jellyfin/luci-app-jellyfin
+              remote: openwrt-app-actions/applications/luci-app-jellyfin
+        meta:
+            - local: apps/jellyfin/app-meta-jellyfin
+              remote: openwrt-app-meta/applications/app-meta-jellyfin
+    kai:
+        services:
+            - local: apps/kai/kai
+              remote: nas-packages/network/services/kai
+            - local: apps/kai/kai_session
+              remote: nas-packages/network/services/kai_session
+        luci:
+            - local: apps/kai/luci-app-kai
+              remote: nas-packages-luci/luci/luci-app-kai
+        meta:
+            - local: apps/kai/app-meta-kai
+              remote: openwrt-app-meta/applications/app-meta-kai
+    kodexplorer:
+        services: []
+        luci:
+            - local: apps/kodexplorer/luci-app-kodexplorer
+              remote: openwrt-app-actions/applications/luci-app-kodexplorer
+        meta:
+            - local: apps/kodexplorer/app-meta-kodexplorer
+              remote: openwrt-app-meta/applications/app-meta-kodexplorer
+    lanraragi:
+        services: []
+        luci:
+            - local: apps/lanraragi/luci-app-lanraragi
+              remote: openwrt-app-actions/applications/luci-app-lanraragi
+        meta:
+            - local: apps/lanraragi/app-meta-lanraragi
+              remote: openwrt-app-meta/applications/app-meta-lanraragi
+    linkease:
+        services:
+            - local: apps/linkease/linkease
+              remote: nas-packages/network/services/linkease
+        luci:
+            - local: apps/linkease/luci-app-linkease
+              remote: nas-packages-luci/luci/luci-app-linkease
+        meta:
+            - local: apps/linkease/app-meta-linkease
+              remote: openwrt-app-meta/applications/app-meta-linkease
+    linkmount:
+        services:
+            - local: apps/linkmount/linkmount
+              remote: nas-packages/network/services/linkmount
+        luci: []
+        meta: []
+    memos:
+        services: []
+        luci:
+            - local: apps/memos/luci-app-memos
+              remote: openwrt-app-actions/applications/luci-app-memos
+        meta:
+            - local: apps/memos/app-meta-memos
+              remote: openwrt-app-meta/applications/app-meta-memos
+    mtphotos:
+        services: []
+        luci:
+            - local: apps/mtphotos/luci-app-mtphotos
+              remote: openwrt-app-actions/applications/luci-app-mtphotos
+        meta:
+            - local: apps/mtphotos/app-meta-mtphotos
+              remote: openwrt-app-meta/applications/app-meta-mtphotos
+    multiaccountdial:
+        services: []
+        luci:
+            - local: apps/multiaccountdial/luci-app-multiaccountdial
+              remote: openwrt-app-actions/applications/luci-app-multiaccountdial
+        meta:
+            - local: apps/multiaccountdial/app-meta-multiaccountdial
+              remote: openwrt-app-meta/applications/app-meta-multiaccountdial
+    mymind:
+        services: []
+        luci:
+            - local: apps/mymind/luci-app-mymind
+              remote: openwrt-app-actions/applications/luci-app-mymind
+        meta:
+            - local: apps/mymind/app-meta-mymind
+              remote: openwrt-app-meta/applications/app-meta-mymind
+    nastools:
+        services: []
+        luci:
+            - local: apps/nastools/luci-app-nastools
+              remote: openwrt-app-actions/applications/luci-app-nastools
+        meta: []
+    navidrome:
+        services: []
+        luci:
+            - local: apps/navidrome/luci-app-navidrome
+              remote: openwrt-app-actions/applications/luci-app-navidrome
+        meta:
+            - local: apps/navidrome/app-meta-navidrome
+              remote: openwrt-app-meta/applications/app-meta-navidrome
+    netdata:
+        services: []
+        luci:
+            - local: apps/netdata/luci-app-netdata
+              remote: openwrt-app-actions/applications/luci-app-netdata
+        meta:
+            - local: apps/netdata/app-meta-netdata
+              remote: openwrt-app-meta/applications/app-meta-netdata
+    nextcloud:
+        services: []
+        luci:
+            - local: apps/nextcloud/luci-app-nextcloud
+              remote: openwrt-app-actions/applications/luci-app-nextcloud
+        meta:
+            - local: apps/nextcloud/app-meta-nextcloud
+              remote: openwrt-app-meta/applications/app-meta-nextcloud
+    oneapi:
+        services: []
+        luci:
+            - local: apps/oneapi/luci-app-oneapi
+              remote: openwrt-app-actions/applications/luci-app-oneapi
+        meta:
+            - local: apps/oneapi/app-meta-oneapi
+              remote: openwrt-app-meta/applications/app-meta-oneapi
+    openwebui:
+        services: []
+        luci:
+            - local: apps/openwebui/luci-app-openwebui
+              remote: openwrt-app-actions/applications/luci-app-openwebui
+        meta:
+            - local: apps/openwebui/app-meta-openwebui
+              remote: openwrt-app-meta/applications/app-meta-openwebui
+    owntone:
+        services: []
+        luci:
+            - local: apps/owntone/luci-app-owntone
+              remote: openwrt-app-actions/applications/luci-app-owntone
+        meta:
+            - local: apps/owntone/app-meta-owntone
+              remote: openwrt-app-meta/applications/app-meta-owntone
+    penpot:
+        services: []
+        luci:
+            - local: apps/penpot/luci-app-penpot
+              remote: openwrt-app-actions/applications/luci-app-penpot
+        meta:
+            - local: apps/penpot/app-meta-penpot
+              remote: openwrt-app-meta/applications/app-meta-penpot
+    photoprism:
+        services: []
+        luci:
+            - local: apps/photoprism/luci-app-photoprism
+              remote: openwrt-app-actions/applications/luci-app-photoprism
+        meta:
+            - local: apps/photoprism/app-meta-photoprism
+              remote: openwrt-app-meta/applications/app-meta-photoprism
+    plex:
+        services: []
+        luci:
+            - local: apps/plex/luci-app-plex
+              remote: openwrt-app-actions/applications/luci-app-plex
+        meta:
+            - local: apps/plex/app-meta-plex
+              remote: openwrt-app-meta/applications/app-meta-plex
+    pve:
+        services: []
+        luci:
+            - local: apps/pve/luci-app-pve
+              remote: openwrt-app-actions/applications/luci-app-pve
+        meta:
+            - local: apps/pve/app-meta-pve
+              remote: openwrt-app-meta/applications/app-meta-pve
+    quickstart:
+        services:
+            - local: apps/quickstart/quickstart
+              remote: nas-packages/network/services/quickstart
+        luci:
+            - local: apps/quickstart/luci-app-quickstart
+              remote: nas-packages-luci/luci/luci-app-quickstart
+        meta: []
+    rtbwmon:
+        services: []
+        luci:
+            - local: apps/rtbwmon/luci-app-rtbwmon
+              remote: openwrt-app-actions/applications/luci-app-rtbwmon
+        meta:
+            - local: apps/rtbwmon/app-meta-rtbwmon
+              remote: openwrt-app-meta/applications/app-meta-rtbwmon
+    runmynas:
+        services: []
+        luci:
+            - local: apps/runmynas/luci-app-runmynas
+              remote: openwrt-app-actions/applications/luci-app-runmynas
+        meta:
+            - local: apps/runmynas/app-meta-runmynas
+              remote: openwrt-app-meta/applications/app-meta-runmynas
+    shadowrt:
+        services: []
+        luci:
+            - local: apps/shadowrt/luci-app-shadowrt
+              remote: openwrt-app-actions/applications/luci-app-shadowrt
+        meta:
+            - local: apps/shadowrt/app-meta-shadowrt
+              remote: openwrt-app-meta/applications/app-meta-shadowrt
+    speedtestcli:
+        services:
+            - local: apps/speedtestcli/speedtestcli
+              remote: openwrt-app-actions/applications/speedtestcli
+        luci: []
+        meta: []
+    sunpanel:
+        services:
+            - local: apps/sunpanel/sunpanel
+              remote: openwrt-app-actions/applications/sunpanel
+        luci:
+            - local: apps/sunpanel/luci-app-sunpanel
+              remote: openwrt-app-actions/applications/luci-app-sunpanel
+        meta:
+            - local: apps/sunpanel/app-meta-sunpanel
+              remote: openwrt-app-meta/applications/app-meta-sunpanel
+    systools:
+        services: []
+        luci:
+            - local: apps/systools/luci-app-systools
+              remote: openwrt-app-actions/applications/luci-app-systools
+        meta:
+            - local: apps/systools/app-meta-systools
+              remote: openwrt-app-meta/applications/app-meta-systools
+    typecho:
+        services: []
+        luci:
+            - local: apps/typecho/luci-app-typecho
+              remote: openwrt-app-actions/applications/luci-app-typecho
+        meta:
+            - local: apps/typecho/app-meta-typecho
+              remote: openwrt-app-meta/applications/app-meta-typecho
+    ubuntu:
+        services: []
+        luci:
+            - local: apps/ubuntu/luci-app-ubuntu
+              remote: openwrt-app-actions/applications/luci-app-ubuntu
+        meta:
+            - local: apps/ubuntu/app-meta-ubuntu
+              remote: openwrt-app-meta/applications/app-meta-ubuntu
+    ubuntu2:
+        services: []
+        luci:
+            - local: apps/ubuntu2/luci-app-ubuntu2
+              remote: openwrt-app-actions/applications/luci-app-ubuntu2
+        meta: []
+    unifi:
+        services: []
+        luci:
+            - local: apps/unifi/luci-app-unifi
+              remote: openwrt-app-actions/applications/luci-app-unifi
+        meta:
+            - local: apps/unifi/app-meta-unifi
+              remote: openwrt-app-meta/applications/app-meta-unifi
+    unishare:
+        services:
+            - local: apps/unishare/unishare
+              remote: nas-packages/network/services/unishare
+        luci:
+            - local: apps/unishare/luci-app-unishare
+              remote: nas-packages-luci/luci/luci-app-unishare
+        meta: []
+    uptimekuma:
+        services: []
+        luci:
+            - local: apps/uptimekuma/luci-app-uptimekuma
+              remote: openwrt-app-actions/applications/luci-app-uptimekuma
+        meta:
+            - local: apps/uptimekuma/app-meta-uptimekuma
+              remote: openwrt-app-meta/applications/app-meta-uptimekuma
+    vaultwarden:
+        services: []
+        luci:
+            - local: apps/vaultwarden/luci-app-vaultwarden
+              remote: openwrt-app-actions/applications/luci-app-vaultwarden
+        meta:
+            - local: apps/vaultwarden/app-meta-vaultwarden
+              remote: openwrt-app-meta/applications/app-meta-vaultwarden
+    vmease:
+        services:
+            - local: apps/vmease/vmease
+              remote: openwrt-app-actions/applications/vmease
+        luci: []
+        meta: []
+    wan-mac:
+        services: []
+        luci:
+            - local: apps/wan-mac/luci-app-wan-mac
+              remote: openwrt-app-actions/applications/luci-app-wan-mac
+        meta:
+            - local: apps/wan-mac/app-meta-wan-mac
+              remote: openwrt-app-meta/applications/app-meta-wan-mac
+    webdav2:
+        services:
+            - local: apps/webdav2/webdav2
+              remote: nas-packages/network/services/webdav2
+        luci: []
+        meta: []
+    webvirtcloud:
+        services: []
+        luci:
+            - local: apps/webvirtcloud/luci-app-webvirtcloud
+              remote: openwrt-app-actions/applications/luci-app-webvirtcloud
+        meta:
+            - local: apps/webvirtcloud/app-meta-webvirtcloud
+              remote: openwrt-app-meta/applications/app-meta-webvirtcloud
+    wxedge:
+        services: []
+        luci:
+            - local: apps/wxedge/luci-app-wxedge
+              remote: openwrt-app-actions/applications/luci-app-wxedge
+        meta: []
+    xteve:
+        services: []
+        luci:
+            - local: apps/xteve/luci-app-xteve
+              remote: openwrt-app-actions/applications/luci-app-xteve
+        meta:
+            - local: apps/xteve/app-meta-xteve
+              remote: openwrt-app-meta/applications/app-meta-xteve
+    xunlei:
+        services: []
+        luci:
+            - local: apps/xunlei/luci-app-xunlei
+              remote: openwrt-app-actions/applications/luci-app-xunlei
+        meta:
+            - local: apps/xunlei/app-meta-xunlei
+              remote: openwrt-app-meta/applications/app-meta-xunlei
+    xunyou:
+        services:
+            - local: apps/xunyou/xunyou
+              remote: openwrt-app-actions/applications/xunyou
+        luci:
+            - local: apps/xunyou/luci-app-xunyou
+              remote: openwrt-app-actions/applications/luci-app-xunyou
+        meta: []
+    zdinnav:
+        services: []
+        luci:
+            - local: apps/zdinnav/luci-app-zdinnav
+              remote: openwrt-app-actions/applications/luci-app-zdinnav
+        meta:
+            - local: apps/zdinnav/app-meta-zdinnav
+              remote: openwrt-app-meta/applications/app-meta-zdinnav

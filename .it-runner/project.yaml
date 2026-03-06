@@ -1,0 +1,8 @@
+name: "istoreos-app-hub"
+tasksDir: ".it-runner/tasks"
+logsDir: ".it-runner/logs"
+cacheDir: ".it-runner/cache"
+envFiles:
+  - ".it-runner/envs/shared.env"
+  - ".it-runner/envs/secrets.env"
+enabled: true
