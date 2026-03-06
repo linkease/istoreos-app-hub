@@ -1,6 +1,6 @@
 # sync apps（双向同步规划与工具）
 
-本仓库的目标是把同一个插件分散在不同 legacy 仓库中的 `services / luci / meta` 聚合到 `apps/<app>/` 下，并支持与 legacy 目录双向同步。
+本仓库的目标是把同一个插件分散在不同 legacy 仓库中的源码与描述文件聚合到 `apps/<app>/` 下，并支持与 legacy 目录双向同步。
 
 目前 legacy 根目录（本仓库的上一级）为：`/projects/workspace-linkease-ubuntu/openwrt-apps`，其中包含：
 
@@ -16,7 +16,7 @@
 ## 需求拆解
 
 1. 将“有源代码的 app”聚合到本仓库 `apps/` 下：`apps/<app>/` 下直接放 legacy 包目录（目录名保持一致，例如 `luci-app-*`、`app-meta-*`），同步时不改名。
-2. 每个插件的同步目标不一致：同一 `slot`（services/luci/meta）可能来自不同 legacy 仓库与不同路径。
+2. 每个插件的同步目标不一致：同一类内容（services/luci/meta）可能来自不同 legacy 仓库与不同路径。
 3. 需要按文件修改时间（mtime）做双向同步：
    - legacy 侧更新 → 回灌到 `apps/<app>/...`
    - hub 侧更新 → 推回到 legacy 目录
@@ -45,7 +45,7 @@
 
 ## 配置：`syncapps.yaml`
 
-每个 app 可分别配置 `services/luci/meta` 的一个或多个“映射对”，从而实现“每个插件同步目标不一致”的需求。
+每个 app 可分别配置 `services/luci/meta` 的一个或多个“映射对”，从而实现“每个插件同步目标不一致”的需求（每个 slot 可以有多个 package 目录）。
 
 约定：
 
@@ -59,6 +59,8 @@
 - 优先级：若 `syncapps.yaml:legacy_root` 非空则优先生效；只有当其为空/未设置时才会回退使用环境变量 `LEGACY_ROOT`。
 - `DATA_ROOT`：it-runner 用于放日志/缓存等运行数据的外部目录，和同步的 legacy 仓库根目录不是一回事。
 
+注意：`syncapps` 不支持在 YAML 里写 `${VAR}` 这类环境变量展开；请用上述“空值回退”方式或直接写绝对路径。
+
 配置文件位置：仓库根目录 `syncapps.yaml`（建议纳入版本控制，作为团队共识）。
 
 ## 工具：Golang 多命令布局
@@ -68,15 +70,15 @@
 - Go 模块：`tools/go.mod`
 - 命令：`tools/cmd/syncapps`（MVP 实现 Simple 模式）
 
-用法示例：
+用法示例（推荐用 Makefile）：
 
 ```bash
+# 自动扫描 legacy 并生成/补全映射
+LEGACY_ROOT=/path/to/openwrt-apps make syncapps-autogen
+
 # 预演：同步全部 app（双向，mtime 胜出，不落盘）
-go run ./tools/cmd/syncapps --dry-run --all
+LEGACY_ROOT=/path/to/openwrt-apps make syncapps-dry-all
 
-# 同步单个 app
-go run ./tools/cmd/syncapps --app istorepanel
-
-# 只同步某个 slot（services/luci/meta）
-go run ./tools/cmd/syncapps --app istorepanel --slot meta
+# 同步单个 app（只同步 meta slot）
+LEGACY_ROOT=/path/to/openwrt-apps make syncapps-app APP=istorepanel SLOT=meta
 ```

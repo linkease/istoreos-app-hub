@@ -12,7 +12,7 @@
 
 - 一个插件一个目录
 - 插件目录下直接放 legacy 包目录（例如：`<app>`、`luci-app-<app>`、`app-meta-<app>`）
-- 通过 rsync 脚本与历史仓双向同步
+- 通过 Go 工具 `syncapps` 与 legacy 目录双向同步（底层 rsync）
 
 ## 仓库结构
 
@@ -38,7 +38,7 @@ istoreos-app-hub/
 推荐使用 Go 工具 `syncapps` + `syncapps.yaml` 做显式映射（每个 app 可配置不同来源与目标）。
 详见：`docs/syncapps.md`。
 
-## 同步脚本
+## 同步
 
 同步使用 Go 工具 `syncapps` + `syncapps.yaml`（支持自动扫描生成映射、全量/单 app 同步、dry-run）。
 
@@ -71,7 +71,7 @@ make syncapps-app APP=istorepanel
 建议给 AI 的任务模板：
 
 ```text
-请在 apps/<app-name>/ 下修改，保持 services/luci/meta 聚合结构。
+请在 apps/<app-name>/ 下修改，保持“包目录名与 legacy 一致、不改名”的聚合结构（例如 luci-app-*/app-meta-*）。
 完成后给出 dry-run 同步命令，并说明会影响哪些 legacy 目录。
 ```
 
@@ -85,10 +85,10 @@ make syncapps-app APP=istorepanel
 ## 约定与边界
 
 - 目录命名建议与历史包名保持一致，减少映射歧义。
-- 新增插件时先创建骨架：`apps/<app>/services`、`apps/<app>/luci`、`apps/<app>/meta`。
+- 新增插件时先创建 `apps/<app>/`，并在其下按需创建包目录（例如 `<app>`、`luci-app-<app>`、`app-meta-<app>`）。
 - 推荐把 `syncapps.yaml` 纳入版本控制，作为团队的映射共识。
 
 ## 下一步建议
 
-- 增加 `scripts/check-diff.sh`：检查 hub 与 legacy 是否一致。
+- 增加 “Strict 模式”（状态文件/冲突检测/删除传播策略）。
 - 在 CI 增加 dry-run + 变更清单校验，避免误同步。

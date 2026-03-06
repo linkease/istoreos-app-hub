@@ -8,14 +8,14 @@
 
 ```text
 apps/<app-name>/
-├── <services-pkg>/
-├── <luci-pkg>/
-└── <meta-pkg>/
+├── <services-pkg>/   # e.g. <app> or other service pkg name
+├── <luci-pkg>/       # e.g. luci-app-<app>
+└── <meta-pkg>/       # e.g. app-meta-<app>
 ```
 
 说明：
 
-- `apps/<app-name>/` 下直接放“包目录”（目录名保持与 legacy 一致，例如 `luci-app-*`、`app-meta-*`），同步时不会改名。
+- `apps/<app-name>/` 下直接放“包目录”，目录名保持与 legacy 一致（例如 `luci-app-*`、`app-meta-*`），同步时不会改名。
 
 ## 2. 命名建议
 
@@ -47,10 +47,10 @@ mkdir -p apps/${APP}/app-meta-foo
 make syncapps-autogen
 
 # 预演（不写入）
-make syncapps-app APP=app-foo DRY=1
+LEGACY_ROOT=/path/to/openwrt-apps make syncapps-app APP=app-foo DRY=1
 
 # 正式同步
-make syncapps-app APP=app-foo
+LEGACY_ROOT=/path/to/openwrt-apps make syncapps-app APP=app-foo
 ```
 
 ## 5. 提交前检查清单
@@ -65,7 +65,7 @@ make syncapps-app APP=app-foo
 可直接把以下文本给 AI：
 
 ```text
-请在 apps/<app-name>/ 内修改，保持 services/luci/meta 聚合结构。
+请在 apps/<app-name>/ 内修改，保持“包目录名与 legacy 一致、不改名”的聚合结构（例如 luci-app-*/app-meta-*）。
 修改后给出：
 1) `make syncapps-app APP=<app-name> DRY=1` 的输出摘要
 2) 实际会影响的 legacy 目录列表
