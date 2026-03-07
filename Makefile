@@ -6,6 +6,7 @@ GO ?= go
 BIN_DIR ?= bin
 SYNCAPPS_BIN := $(BIN_DIR)/syncapps
 SYNCAPPS_CONFIG ?= syncapps.yaml
+APPCATALOG_BIN := $(BIN_DIR)/appcatalog
 
 TOOLS_GO_SRCS := $(shell find tools -type f -name '*.go' -print 2>/dev/null) tools/go.mod tools/go.sum
 
@@ -15,6 +16,8 @@ help:
   "Targets:" \
   "  make build-syncapps         Build $(SYNCAPPS_BIN)" \
   "  make build-syncapps-autogen Build $(BIN_DIR)/syncapps-autogen" \
+  "  make build-appcatalog       Build $(APPCATALOG_BIN)" \
+  "  make apps-catalog           Generate docs/apps-catalog*.{md,json}" \
   "  make tidy-tools             Run go mod tidy (tools)" \
   "  make syncapps-autogen       Scan legacy -> update config" \
   "  make syncapps-autogen-dry   Dry-run autogen" \
@@ -45,6 +48,16 @@ $(SYNCAPPS_BIN): $(BIN_DIR) $(TOOLS_GO_SRCS)
 
 $(BIN_DIR)/syncapps-autogen: $(BIN_DIR) $(TOOLS_GO_SRCS)
 >@$(GO) -C tools build -o "../$(BIN_DIR)/syncapps-autogen" ./cmd/syncapps-autogen
+
+.PHONY: build-appcatalog
+build-appcatalog: $(APPCATALOG_BIN)
+
+$(APPCATALOG_BIN): $(BIN_DIR) $(TOOLS_GO_SRCS)
+>@$(GO) -C tools build -o "../$(APPCATALOG_BIN)" ./cmd/appcatalog
+
+.PHONY: apps-catalog
+apps-catalog: build-appcatalog
+>@"./$(APPCATALOG_BIN)" --apps-root apps --out-json docs/apps-catalog.json --out-md docs/apps-catalog.min.md --out-md-full docs/apps-catalog.md
 
 .PHONY: tidy-tools
 tidy-tools:

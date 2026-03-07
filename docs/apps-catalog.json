@@ -1,0 +1,993 @@
+[
+  {
+    "id": "airconnect",
+    "title": "AirConnect",
+    "description": "让 UPnP/Sonos 和 Chromecast 设备支持 AirPlay 音频串流",
+    "description_en": "Use AirPlay to stream to UPnP/Sonos and Chromecast devices",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://github.com/philippe44/AirConnect",
+    "author": "philippe44/jjm2473",
+    "version": "1.0.13",
+    "release": "20221214",
+    "depends": "+airconnect +luci-app-airconnect +luci-i18n-airconnect-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/airconnect",
+    "meta_dir": "apps/airconnect/app-meta-airconnect"
+  },
+  {
+    "id": "ap-modem",
+    "title": "访问AP/光猫",
+    "description": "让局域网客户端访问不同子网的AP或光猫（只支持 OpenWRT 21 以上）",
+    "description_en": "Allows clients in the local network to access AP or modem on different subnet. (Only OpenWRT 21+)",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://github.com/linkease/openwrt-app-actions/tree/main/applications/luci-app-ap-modem",
+    "author": "jjm2473",
+    "version": "1.0.4",
+    "release": "20230408",
+    "depends": "+luci-app-ap-modem +luci-i18n-ap-modem-zh-cn +luci-js-deps",
+    "luci_entry": "/cgi-bin/luci/admin/network/ap_modem",
+    "meta_dir": "apps/ap-modem/app-meta-ap-modem"
+  },
+  {
+    "id": "arcadia",
+    "title": "Arcadia一站式代码运维平台",
+    "description": "脚本语言编程与运维，支持定时任务调度。",
+    "description_en": "Script language programming and operation. Supporting scheduled task scheduling.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://arcadia.cool",
+    "author": "SuperManito",
+    "version": "1.0.0",
+    "release": "1",
+    "depends": "+luci-app-arcadia +luci-i18n-arcadia-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/arcadia",
+    "meta_dir": "apps/arcadia/app-meta-arcadia"
+  },
+  {
+    "id": "chinesesubfinder",
+    "title": "ChineseSubFinder中文字幕",
+    "description": "ChineseSubFinder是一个中文字幕平台。",
+    "description_en": "ChineseSubFinder is a Chinese subtitle platform.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://github.com/allanpk716/ChineseSubFinder",
+    "author": "ChineseSubFinder",
+    "version": "1.0.3",
+    "release": "20240113",
+    "depends": "+luci-app-chinesesubfinder +luci-i18n-chinesesubfinder-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/chinesesubfinder",
+    "meta_dir": "apps/chinesesubfinder/app-meta-chinesesubfinder"
+  },
+  {
+    "id": "clouddrive2",
+    "title": "CloudDrive2",
+    "description": "CloudDrive 是一个强大的多云盘管理工具，为用户提供包含云盘本地挂载的一站式的多云盘解决方案。",
+    "description_en": "CloudDrive is a powerful multi-cloud drive management tool with local mounting of cloud drives.",
+    "tags": [
+      "service",
+      "tool"
+    ],
+    "website": "https://www.clouddrive2.com/",
+    "author": "CloudDrive/jjm2473",
+    "version": "1.0.1",
+    "release": "20250116",
+    "depends": "+luci-app-clouddrive2 +luci-i18n-clouddrive2-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/clouddrive2",
+    "meta_dir": "apps/clouddrive2/app-meta-clouddrive2"
+  },
+  {
+    "id": "codeserver",
+    "title": "CodeServer",
+    "description": "一个在线版本的VSCode，可以在线开发。",
+    "description_en": "An online version of VSCode that can be developed online.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://coder.com/",
+    "author": "Coder Technologies",
+    "version": "1.0.2",
+    "release": "2025101",
+    "depends": "+luci-app-codeserver +luci-i18n-codeserver-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/codeserver",
+    "meta_dir": "apps/codeserver/app-meta-codeserver"
+  },
+  {
+    "id": "ddnsto",
+    "title": "DDNSTO路由远程",
+    "description": "DDNSTO内网穿透，可以外网远程你的路由器",
+    "description_en": "DDNSTO is a reverse proxy software that does not need to deploy a server. It is mainly used to manage intranet devices on the Internet through a browser.",
+    "tags": [
+      "networking",
+      "service"
+    ],
+    "website": "https://www.ddnsto.com/",
+    "author": "xiaobao",
+    "version": "3.0.4",
+    "release": "5",
+    "depends": "+ddnsto +luci-app-ddnsto +luci-i18n-ddnsto-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/ddnsto",
+    "meta_dir": "apps/ddnsto/app-meta-ddnsto"
+  },
+  {
+    "id": "demon",
+    "title": "容器魔王",
+    "description": "【魔王现世】为 iStoreOS 特制，收益更高。每月至高可赚「千元」，现在上线秒领「30天20%收益加成」，挂机托管自动赚米，拿到手软！替代网心云的「容器魔方」。",
+    "tags": [
+      "net"
+    ],
+    "website": "https://www.onethingcloud.com/",
+    "author": "网心云",
+    "version": "1.2.0",
+    "release": "20250714",
+    "depends": "+luci-app-demon +luci-i18n-demon-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/demon",
+    "meta_dir": "apps/demon/app-meta-demon"
+  },
+  {
+    "id": "dpanel",
+    "title": "DPanel 可视化面板",
+    "description": "轻量化 docker 可视化管理面板。",
+    "description_en": "A lightweight docker visual management panel.",
+    "tags": [
+      "net"
+    ],
+    "website": "https://github.com/donknap/dpanel",
+    "author": "donknap",
+    "version": "1.0.0",
+    "release": "20251009",
+    "depends": "+luci-app-dpanel +luci-i18n-dpanel-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/dpanel",
+    "meta_dir": "apps/dpanel/app-meta-dpanel"
+  },
+  {
+    "id": "drawio",
+    "title": "DrawIO绘图",
+    "description": "DrawIO是运行在浏览器中的在线绘图工具。",
+    "description_en": "DrawIO is an online drawing tool that runs in the browser.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://www.diagrams.net/",
+    "author": "diagrams.net",
+    "version": "1.0.0",
+    "release": "20221212",
+    "depends": "+luci-app-drawio +luci-i18n-drawio-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/drawio",
+    "meta_dir": "apps/drawio/app-meta-drawio"
+  },
+  {
+    "id": "emby",
+    "title": "Emby影院",
+    "description": "Emby是一个多媒体串流平台，可以让您方便地管理和串流您的媒体。",
+    "description_en": "Emby is the volunteer-built media solution that puts you in control of your media.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://emby.media/",
+    "author": "Emby",
+    "version": "1.0.3",
+    "release": "20250325",
+    "depends": "+luci-app-emby +luci-i18n-emby-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/emby",
+    "meta_dir": "apps/emby/app-meta-emby"
+  },
+  {
+    "id": "excalidraw",
+    "title": "Excalidraw画板",
+    "description": "Excalidraw是支持多人协同的私有化在线画板工具。",
+    "description_en": "Excalidraw is a privatized online drawing board tool that supports multi-person collaboration.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://excalidraw.com/",
+    "author": "excalidraw",
+    "version": "1.0.0",
+    "release": "20221212",
+    "depends": "+luci-app-excalidraw +luci-i18n-excalidraw-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/excalidraw",
+    "meta_dir": "apps/excalidraw/app-meta-excalidraw"
+  },
+  {
+    "id": "fastnet",
+    "title": "FastNet 网络测速",
+    "description": "FastNet 提供网络测速与网络诊断 Web UI，默认端口 3200。",
+    "description_en": "FastNet provides network testing tools and a Web UI (default port 3200).",
+    "tags": [
+      "networking",
+      "service"
+    ],
+    "website": "https://www.koolcenter.com/t/topic/9148",
+    "author": "xiaobao",
+    "version": "0.7.5",
+    "release": "5",
+    "depends": "+fastnet +luci-app-fastnet +luci-i18n-fastnet-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/fastnet",
+    "meta_dir": "apps/fastnet/app-meta-fastnet"
+  },
+  {
+    "id": "floatip",
+    "title": "浮动网关",
+    "description": "浮动网关可以让你在内网有两个相互备份的网关，出现问题会相互切换。",
+    "description_en": "FloatingGateway allows two gateway within one lan which can switch between each other in case of a failure.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://github.com/linkease/nas-packages",
+    "author": "jjm2473",
+    "version": "1.0.10",
+    "release": "1",
+    "depends": "+floatip +luci-app-floatip +luci-i18n-floatip-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/floatip",
+    "meta_dir": "apps/floatip/app-meta-floatip"
+  },
+  {
+    "id": "gogs",
+    "title": "Gogs服务",
+    "description": "一款极易搭建的自助Git服务。",
+    "description_en": "An easy-to-build self-service Git service.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://gogs.io/",
+    "author": "Gogs",
+    "version": "1.0.3",
+    "release": "20240304",
+    "depends": "+luci-app-gogs +luci-i18n-gogs-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/gogs",
+    "meta_dir": "apps/gogs/app-meta-gogs"
+  },
+  {
+    "id": "heimdall",
+    "title": "Heimdall",
+    "description": "Heimdall 应用程序仪表板是所有 Web 应用程序的仪表板。不过，它不需要仅限于应用程序，您可以添加任何您喜欢的链接",
+    "description_en": "Heimdall Application Dashboard is a dashboard for all your web applications. It doesn't need to be limited to applications though, you can add links to anything you like.",
+    "tags": [
+      "net",
+      "service"
+    ],
+    "website": "https://heimdall.site/",
+    "author": "LinuxServer.io",
+    "version": "1.1.2",
+    "release": "20240105",
+    "depends": "+luci-i18n-heimdall-zh-cn +luci-app-heimdall +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/heimdall",
+    "meta_dir": "apps/heimdall/app-meta-heimdall"
+  },
+  {
+    "id": "homeassistant",
+    "title": "Home Assistant",
+    "description": "开源智能家居系统，将本地控制和隐私放在首位。",
+    "description_en": "Open source home automation that puts local control and privacy first.",
+    "tags": [
+      "net",
+      "service"
+    ],
+    "website": "https://www.home-assistant.io/",
+    "author": "Home Assistant",
+    "version": "1.1.4",
+    "release": "20250321",
+    "depends": "+luci-app-homeassistant +luci-i18n-homeassistant-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/homeassistant",
+    "meta_dir": "apps/homeassistant/app-meta-homeassistant"
+  },
+  {
+    "id": "htreader",
+    "title": "HTReader在线读书",
+    "description": "HTReader 是一个网页版本在线读书。",
+    "description_en": "HTReader is book reader in web.",
+    "tags": [
+      "net"
+    ],
+    "website": "https://github.com/hectorqin/reader",
+    "author": "hectorqin",
+    "version": "1.0.2",
+    "release": "20230619",
+    "depends": "+luci-app-htreader +luci-i18n-htreader-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/htreader",
+    "meta_dir": "apps/htreader/app-meta-htreader"
+  },
+  {
+    "id": "immich",
+    "title": "immich相册",
+    "description": "Immich 是一个自我托管的照片和视频管理解决方案。",
+    "description_en": "Immich is a self-host photo and video management solution.",
+    "tags": [
+      "ai",
+      "multimedia"
+    ],
+    "website": "https://www.immich.app",
+    "author": "immich",
+    "version": "1.0.2",
+    "release": "20250321",
+    "depends": "+vmease +luci-app-immich +luci-i18n-immich-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/immich",
+    "meta_dir": "apps/immich/app-meta-immich"
+  },
+  {
+    "id": "istoredup",
+    "title": "iStoreDup",
+    "description": "iStoreOS 容器版。此插件已废弃，iStoreOS 请使用更方便的「ShadoWRT」，保留此插件仅为其他系统体验 iStoreOS 之用",
+    "description_en": "iStoreOS Container Edition. This plugin is deprecated. For iStoreOS, please use the more convenient \"ShadoWRT\". This plugin is retained only for other operating systems to experience iStoreOS",
+    "tags": [
+      "system"
+    ],
+    "website": "https://www.istoreos.com",
+    "author": "xiaobao",
+    "version": "1.1.6",
+    "release": "20250325",
+    "depends": "+vmease +luci-app-istoredup +luci-i18n-istoredup-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/istoredup",
+    "meta_dir": "apps/istoredup/app-meta-istoredup"
+  },
+  {
+    "id": "istoreenhance",
+    "title": "KSpeeder(原iStore增强)",
+    "description": "KSpeeder增强插件可以有效的解决Docker等网络问题，让 iStore 更好用。",
+    "description_en": "KSpeeder is a tool to fix network issues for iStore.",
+    "tags": [
+      "nas",
+      "service"
+    ],
+    "website": "https://kspeeder.com/",
+    "author": "xiaobao",
+    "version": "0.7.0",
+    "release": "1",
+    "depends": "+istoreenhance +luci-app-istoreenhance +luci-i18n-istoreenhance-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/istoreenhance",
+    "meta_dir": "apps/istoreenhance/app-meta-istoreenhance"
+  },
+  {
+    "id": "istorepanel",
+    "title": "1Panel",
+    "description": "1Panel 是新一代的 Linux 服务器运维管理面板",
+    "description_en": "1Panel is the new generation Linux server maintenance panel.",
+    "tags": [
+      "net"
+    ],
+    "website": "https://1panel.cn/index.html",
+    "author": "FIT2CLOUD",
+    "version": "1.0.6",
+    "release": "20250406",
+    "depends": "+luci-app-istorepanel +luci-i18n-istorepanel-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/istorepanel",
+    "meta_dir": "apps/istorepanel/app-meta-istorepanel"
+  },
+  {
+    "id": "istorex",
+    "title": "istorex",
+    "description": "为iStoreOS适配的全新首页。",
+    "description_en": "A new homepage for iStoreOS.",
+    "tags": [
+      "net",
+      "system"
+    ],
+    "website": "https://github.com/linkease/nas-packages-luci",
+    "author": "Carseason",
+    "version": "0.6.6",
+    "release": "3",
+    "depends": "+luci-app-istorex +luci-js-deps",
+    "luci_entry": "/cgi-bin/luci/admin/istorex",
+    "meta_dir": "apps/istorex/app-meta-istorex"
+  },
+  {
+    "id": "ittools",
+    "title": "开发工具集",
+    "description": "开发工具集是集成了很多有用的网页工具。",
+    "description_en": "ITTools is useful tools for developer and people working in IT.",
+    "tags": [
+      "net"
+    ],
+    "website": "https://it-tools.tech/",
+    "author": "ittools",
+    "version": "1.0.4",
+    "release": "20250321",
+    "depends": "+luci-app-ittools +luci-i18n-ittools-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/ittools",
+    "meta_dir": "apps/ittools/app-meta-ittools"
+  },
+  {
+    "id": "jackett",
+    "title": "Jackett",
+    "description": "Jackett 是维护索引器抓取和翻译逻辑的单一存储库 - 消除了其他应用程序的负担。",
+    "description_en": "Jackett is a single repository of maintained indexer scraping \u0026 translation logic - removing the burden from other apps.",
+    "tags": [
+      "download",
+      "nas"
+    ],
+    "website": "https://github.com/Jackett/Jackett",
+    "author": "Jackett/jjm2473",
+    "version": "1.0.0",
+    "release": "20220718",
+    "depends": "+luci-app-jackett +luci-i18n-jackett-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/jackett",
+    "meta_dir": "apps/jackett/app-meta-jackett"
+  },
+  {
+    "id": "jellyfin",
+    "title": "Jellyfin私有影院",
+    "description": "Jellyfin是一个免费自由的媒体系统软件，可以让您方便地管理和串流您的媒体。部分机型无需配置即可支持硬件转码：Easepi ARS2；RK35xx 系列。",
+    "description_en": "Jellyfin is the volunteer-built media solution that puts you in control of your media. Some models support hardware transcoding out-of-box: Easepi ARS2; RK35xx series.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://jellyfin.org",
+    "author": "Jellyfin/jjm2473",
+    "version": "1.2.2",
+    "release": "20250325",
+    "depends": "+luci-app-jellyfin +luci-i18n-jellyfin-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/jellyfin",
+    "meta_dir": "apps/jellyfin/app-meta-jellyfin"
+  },
+  {
+    "id": "kai",
+    "title": "酷友社KAI",
+    "description": "KAI安装软件助手(iStoreOS 24版本以上适用)",
+    "description_en": "AI software installation assistant",
+    "tags": [
+      "ai",
+      "system"
+    ],
+    "website": "https://www.koolcenter.com",
+    "author": "koolcenter",
+    "version": "1.0.0",
+    "release": "3",
+    "depends": "+luci-app-kai +kai +kai_session",
+    "luci_entry": "/cgi-bin/luci/admin/services/kai",
+    "meta_dir": "apps/kai/app-meta-kai"
+  },
+  {
+    "id": "kodexplorer",
+    "title": "可道云",
+    "description": "一款快捷高效的私有云和在线文档管理系统，为个人网站、企业私有云部署、网络存储、在线文档管理、在线办公等提供安全可控，简便易用、可高度定制的私有云产品。采用windows风格界面、操作习惯，无需适应即可快速上手，支持几百种常用文件格式的在线预览，可扩展易定制。",
+    "tags": [
+      "nas",
+      "service"
+    ],
+    "website": "https://kodcloud.com",
+    "author": "kodexplorer",
+    "version": "1.2.0",
+    "release": "20221114",
+    "depends": "+luci-app-kodexplorer +luci-i18n-kodexplorer-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/kodexplorer",
+    "meta_dir": "apps/kodexplorer/app-meta-kodexplorer"
+  },
+  {
+    "id": "lanraragi",
+    "title": "LANraragi电子书",
+    "description": "LANraragi是一个开源的电子书、漫画管理平台。",
+    "description_en": "LANraragi is an open source e-book and comic management platform.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://lrr.tvc-16.science/",
+    "author": "LANraragi",
+    "version": "1.0.0",
+    "release": "20250325",
+    "depends": "+luci-app-lanraragi +luci-i18n-lanraragi-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/lanraragi",
+    "meta_dir": "apps/lanraragi/app-meta-lanraragi"
+  },
+  {
+    "id": "linkease",
+    "title": "易有云",
+    "description": "易有云提供文件的外网访问，相册备份，文件同步，异地组网功能。需要配合电脑、手机客户端使用。",
+    "description_en": "LinkEase is a private cloud storage with its own remote connection to access personal files anytime, anywhere",
+    "tags": [
+      "nas",
+      "service"
+    ],
+    "website": "https://www.linkease.com/",
+    "author": "xiaobao",
+    "version": "1.7.5",
+    "release": "4",
+    "depends": "+linkease +luci-app-linkease +luci-i18n-linkease-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/linkease",
+    "meta_dir": "apps/linkease/app-meta-linkease"
+  },
+  {
+    "id": "memos",
+    "title": "Memos知识管理",
+    "description": "开源的极简的碎片化知识管理工具。",
+    "description_en": "Open source minimalist fragmented knowledge management tool.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://usememos.com/",
+    "author": "usememos",
+    "version": "1.0.2",
+    "release": "20230412",
+    "depends": "+luci-app-memos +luci-i18n-memos-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/memos",
+    "meta_dir": "apps/memos/app-meta-memos"
+  },
+  {
+    "id": "mtphotos",
+    "title": "MTPhotos相册",
+    "description": "MTPhotos是一款简单、好用的照片管理系统。",
+    "description_en": "MTPhotos is simple and easy-to-use photo management system.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://mtmt.tech/",
+    "author": "MTPhotos",
+    "version": "1.0.2",
+    "release": "20240524",
+    "depends": "+luci-app-mtphotos +luci-i18n-mtphotos-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/mtphotos",
+    "meta_dir": "apps/mtphotos/app-meta-mtphotos"
+  },
+  {
+    "id": "multiaccountdial",
+    "title": "多账号多拨",
+    "description": "支持多账号的多拨插件",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://github.com/linkease/openwrt-app-actions/tree/main/applications/luci-app-multiaccountdial",
+    "author": "xiaobao",
+    "version": "2.2",
+    "release": "2",
+    "depends": "+mwan3-deps +luci-app-multiaccountdial",
+    "luci_entry": "/cgi-bin/luci/admin/network/multiaccountdial",
+    "meta_dir": "apps/multiaccountdial/app-meta-multiaccountdial"
+  },
+  {
+    "id": "mymind",
+    "title": "MyMind思维导图",
+    "description": "MyMind 是一个在线思维导图编辑器。",
+    "description_en": "MyMind is an online mind map editor.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://github.com/ondras/my-mind",
+    "author": "MyMind",
+    "version": "1.0.0",
+    "release": "20221106",
+    "depends": "+luci-app-mymind +luci-i18n-mymind-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/mymind",
+    "meta_dir": "apps/mymind/app-meta-mymind"
+  },
+  {
+    "id": "navidrome",
+    "title": "Navidrome音乐",
+    "description": "Navidrome是开源音乐服务器，自建云端音乐播放器。",
+    "description_en": "Navidrome is an open source music server with a self-built cloud music player.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://github.com/navidrome/navidrome",
+    "author": "Navidrome",
+    "version": "1.0.0",
+    "release": "20250325",
+    "depends": "+luci-app-navidrome +luci-i18n-navidrome-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/navidrome",
+    "meta_dir": "apps/navidrome/app-meta-navidrome"
+  },
+  {
+    "id": "netdata",
+    "title": "NetData系统监控",
+    "description": "一眼掌握机器运行状态/系统效能关键指标",
+    "tags": [
+      "monitor",
+      "system"
+    ],
+    "website": "https://www.netdata.cloud/",
+    "author": "netdata",
+    "version": "1.0.0",
+    "release": "1",
+    "depends": "+netdata +luci-app-netdata +luci-i18n-netdata-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/status/netdata",
+    "meta_dir": "apps/netdata/app-meta-netdata"
+  },
+  {
+    "id": "nextcloud",
+    "title": "nextcloud",
+    "description": "数据的安全之家。根据您的设置，从任何设备访问和共享您的文件、日历、联系人、邮件等",
+    "description_en": "Nextcloud puts your data at your fingertips, under your control. Store your documents, calendar, contacts and photos on a server at home, at one of our providers or in a data center you trust.",
+    "tags": [
+      "nas",
+      "service"
+    ],
+    "website": "https://nextcloud.com/",
+    "author": "nextcloud",
+    "version": "1.1.0",
+    "release": "20221114",
+    "depends": "+luci-app-nextcloud +luci-i18n-nextcloud-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/nextcloud",
+    "meta_dir": "apps/nextcloud/app-meta-nextcloud"
+  },
+  {
+    "id": "oneapi",
+    "title": "OneAPI",
+    "description": "OneAPI 是LLM API 管理 \u0026 分发系统，支持 OpenAI、Azure、Anthropic Claude、Google Gemini、DeepSeek。",
+    "description_en": "OneAPI is LLM API Management \u0026 Distribution System, supporting OpenAI, Azure, Anthropic Claude, Google Gemini, and DeepSeek.",
+    "tags": [
+      "ai",
+      "net"
+    ],
+    "website": "https://openai.justsong.cn",
+    "author": "songquanpeng",
+    "version": "1.0.1",
+    "release": "20250403",
+    "depends": "+luci-app-oneapi +luci-i18n-oneapi-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/oneapi",
+    "meta_dir": "apps/oneapi/app-meta-oneapi"
+  },
+  {
+    "id": "openwebui",
+    "title": "OpenWebUI",
+    "description": "Open WebUI 是一款可扩展、自托管的 AI 界面，能够无缝适配您的工作流程，且所有操作均可完全离线运行。",
+    "description_en": "Open WebUI is an extensible, self-hosted AI interface that adapts to your workflow, all while operating entirely offline.",
+    "tags": [
+      "ai",
+      "net"
+    ],
+    "website": "https://openwebui.com/",
+    "author": "open-webui",
+    "version": "1.0.8",
+    "release": "20250325",
+    "depends": "+luci-app-openwebui +luci-i18n-openwebui-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/openwebui",
+    "meta_dir": "apps/openwebui/app-meta-openwebui"
+  },
+  {
+    "id": "owntone",
+    "title": "Owntone音乐平台",
+    "description": "Owntone是一个支持iTunes, AirPlay, Chromecast等的音乐串流平台。",
+    "description_en": "Owntone is a music streaming platform that supports iTunes, AirPlay, Chromecast, etc.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://owntone.github.io/owntone-server/",
+    "author": "owntone",
+    "version": "1.0.2",
+    "release": "20230619",
+    "depends": "+luci-app-owntone +luci-i18n-owntone-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/owntone",
+    "meta_dir": "apps/owntone/app-meta-owntone"
+  },
+  {
+    "id": "penpot",
+    "title": "Penpot设计平台",
+    "description": "Penpot是第一个开源的便于团队协作的在线设计平台。",
+    "description_en": "Penpot is the first open source online design platform for team collaboration.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://penpot.app/",
+    "author": "Kaleidos",
+    "version": "1.0.0",
+    "release": "20221114",
+    "depends": "+luci-app-penpot +luci-i18n-penpot-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/penpot",
+    "meta_dir": "apps/penpot/app-meta-penpot"
+  },
+  {
+    "id": "photoprism",
+    "title": "PhotoPrism相册管理",
+    "description": "PhotoPrism是一个AI驱动的相册管理应用。",
+    "description_en": "PhotoPrism is an AI-driven photo album management application.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://photoprism.app/",
+    "author": "PhotoPrism",
+    "version": "1.0.2",
+    "release": "20230619",
+    "depends": "+luci-app-photoprism +luci-i18n-photoprism-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/photoprism",
+    "meta_dir": "apps/photoprism/app-meta-photoprism"
+  },
+  {
+    "id": "plex",
+    "title": "Plex影院",
+    "description": "Plex是一个多媒体串流平台，可以让您方便地管理和串流您的媒体。",
+    "description_en": "Plex is the volunteer-built media solution that puts you in control of your media.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://www.plex.tv/",
+    "author": "Plex",
+    "version": "1.0.2",
+    "release": "20250325",
+    "depends": "+luci-app-plex +luci-i18n-plex-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/plex",
+    "meta_dir": "apps/plex/app-meta-plex"
+  },
+  {
+    "id": "pve",
+    "title": "Proxmox虚拟机(PVE)",
+    "description": "运行在 iStoreOS 上面的 Proxmox(PVE) 虚拟机平台。",
+    "description_en": "Proxmox in iStoreOS.",
+    "tags": [
+      "system",
+      "tool"
+    ],
+    "website": "https://pve.proxmox.com/",
+    "author": "Proxmox",
+    "version": "8.3.2",
+    "release": "20250325",
+    "depends": "+vmease +luci-app-pve +luci-i18n-pve-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/pve",
+    "meta_dir": "apps/pve/app-meta-pve"
+  },
+  {
+    "id": "rtbwmon",
+    "title": "实时流量",
+    "description": "实时查看客户端网速，无后台服务",
+    "description_en": "Display the network speed of the clients, no background service",
+    "tags": [
+      "monitor",
+      "net"
+    ],
+    "website": "https://github.com/linkease/openwrt-app-actions/tree/main/applications/luci-app-rtbwmon",
+    "author": "jjm2473",
+    "version": "1.1.0",
+    "release": "1",
+    "depends": "+luci-app-rtbwmon +luci-i18n-rtbwmon-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/status/rtbwmon",
+    "meta_dir": "apps/rtbwmon/app-meta-rtbwmon"
+  },
+  {
+    "id": "runmynas",
+    "title": "RunMyNAS自定义固件",
+    "description": "RunMyNAS可以让你根据自己的需要，自定义自己的 iStoreOS 系统。",
+    "description_en": "runmynas can define your own istoreos system.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://github.com/linkease/iStoreNAS",
+    "author": "runmynas/xiaobao",
+    "version": "1.1.1",
+    "release": "20240524",
+    "depends": "+luci-app-runmynas +luci-i18n-runmynas-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/runmynas/pages/",
+    "meta_dir": "apps/runmynas/app-meta-runmynas"
+  },
+  {
+    "id": "shadowrt",
+    "title": "ShadoWRT",
+    "description": "ShadoWRT（系统分身）可创建管理 iStoreOS/OpenWRT 的分身，分身可跟随本体升级且保留数据",
+    "description_en": "Create and manage clones of iStoreOS/OpenWRT that can be upgraded along with the main system",
+    "tags": [
+      "system",
+      "tool"
+    ],
+    "website": "https://www.istoreos.com",
+    "author": "jjm2473",
+    "version": "1.1.7",
+    "release": "1",
+    "depends": "+luci-app-shadowrt +luci-i18n-shadowrt-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/shadowrt",
+    "meta_dir": "apps/shadowrt/app-meta-shadowrt"
+  },
+  {
+    "id": "sunpanel",
+    "title": "SunPanel导航页",
+    "description": "一个易用好看的NAS导航页。",
+    "description_en": "Server, NAS navigation panel, Homepage, Browser homepage.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://sun-panel-doc.enianteam.com",
+    "author": "hslr-s/sun-panel",
+    "version": "1.3.1",
+    "release": "7",
+    "depends": "+luci-i18n-sunpanel-zh-cn +sunpanel +luci-app-sunpanel",
+    "luci_entry": "/cgi-bin/luci/admin/services/sunpanel",
+    "meta_dir": "apps/sunpanel/app-meta-sunpanel"
+  },
+  {
+    "id": "systools",
+    "title": "系统便利工具",
+    "description": "一些便利的工具集，方便修复一些问题，一键开关 IPv6。",
+    "description_en": "Some convenient tools which can fix some errors, switch IPv6.",
+    "tags": [
+      "system",
+      "tool"
+    ],
+    "website": "https://github.com/istoreos",
+    "author": "xiaobao",
+    "version": "1.0.17",
+    "release": "1",
+    "depends": "+luci-app-systools +luci-i18n-systools-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/system/systools/pages",
+    "meta_dir": "apps/systools/app-meta-systools"
+  },
+  {
+    "id": "typecho",
+    "title": "TypeCho博客",
+    "description": "TypeCho 是一个轻量级博客。",
+    "description_en": "TypeCho is a lightweight blog.",
+    "tags": [
+      "net"
+    ],
+    "website": "https://typecho.org/",
+    "author": "TypeCho",
+    "version": "1.0.2",
+    "release": "20240313",
+    "depends": "+luci-app-typecho +luci-i18n-typecho-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/typecho",
+    "meta_dir": "apps/typecho/app-meta-typecho"
+  },
+  {
+    "id": "ubuntu",
+    "title": "Ubuntu",
+    "description": "带Web远程桌面的高性能Docker版Ubuntu。",
+    "description_en": "Ubuntu2 is a high-Performance ubuntu with web remote desktop.",
+    "tags": [
+      "system",
+      "tool"
+    ],
+    "website": "https://www.kasmweb.com",
+    "author": "xiaobao",
+    "version": "1.1.0",
+    "release": "20251012",
+    "depends": "+luci-app-ubuntu2 +luci-i18n-ubuntu2-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/ubuntu2",
+    "meta_dir": "apps/ubuntu/app-meta-ubuntu"
+  },
+  {
+    "id": "unifi",
+    "title": "Unifi控制器",
+    "description": "Ubnt AC 控制器。",
+    "description_en": "Ubnt AC iController.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://www.ui.com/",
+    "author": "Ubiquiti Inc",
+    "version": "1.0.2",
+    "release": "20230619",
+    "depends": "+luci-app-unifi +luci-i18n-unifi-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/unifi",
+    "meta_dir": "apps/unifi/app-meta-unifi"
+  },
+  {
+    "id": "uptimekuma",
+    "title": "UptimeKuma",
+    "description": "Uptime Kuma 是一款易于使用的自托管监控工具。",
+    "description_en": "Uptime Kuma is an easy-to-use self-hosted monitoring tool.",
+    "tags": [
+      "net"
+    ],
+    "website": "https://openai.justsong.cn",
+    "author": "songquanpeng",
+    "version": "1.0.1",
+    "release": "20251011",
+    "depends": "+luci-app-uptimekuma +luci-i18n-uptimekuma-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/uptimekuma",
+    "meta_dir": "apps/uptimekuma/app-meta-uptimekuma"
+  },
+  {
+    "id": "vaultwarden",
+    "title": "Vaultwarden私人密码箱",
+    "description": "Vaultwarden是Rust开发的Bitwarden服务器(私人密码箱)，包括Web Vault。",
+    "description_en": "Alternative implementation of the Bitwarden server API in Rust, including the Web Vault.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://hub.docker.com/r/vaultwarden/server",
+    "author": "Vaultwarden",
+    "version": "1.0.0",
+    "release": "20221118",
+    "depends": "+luci-app-vaultwarden +luci-i18n-vaultwarden-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/vaultwarden",
+    "meta_dir": "apps/vaultwarden/app-meta-vaultwarden"
+  },
+  {
+    "id": "wan-mac",
+    "title": "MAC地址生成器",
+    "description": "方便地修改WAN口MAC地址，可指定前缀随机生成MAC地址.（只支持 OpenWRT 21 以上）",
+    "description_en": "Easily modify the MAC address of the WAN port, and the MAC address can be randomly generated by specifying a prefix. (Only OpenWRT 21+)",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://github.com/linkease/openwrt-app-actions/tree/main/applications/luci-app-wan-mac",
+    "author": "jjm2473",
+    "version": "1.0.1",
+    "release": "20230405",
+    "depends": "+luci-app-wan-mac +luci-i18n-wan-mac-zh-cn +luci-js-deps",
+    "luci_entry": "/cgi-bin/luci/admin/network/wan_mac",
+    "meta_dir": "apps/wan-mac/app-meta-wan-mac"
+  },
+  {
+    "id": "webvirtcloud",
+    "title": "KVM虚拟机(WebVirtCloud)",
+    "description": "iStoreOS上面的 KVM 虚拟机，基于 WebVirtCloud 实现。",
+    "description_en": "KVM virtual machine implemented based on WebVirtCloud.",
+    "tags": [
+      "system",
+      "tool"
+    ],
+    "website": "https://webvirt.cloud/",
+    "author": "webvirtcloud",
+    "version": "0.8.5",
+    "release": "20250325",
+    "depends": "+vmease +luci-app-webvirtcloud +luci-i18n-webvirtcloud-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/webvirtcloud",
+    "meta_dir": "apps/webvirtcloud/app-meta-webvirtcloud"
+  },
+  {
+    "id": "xteve",
+    "title": "Xteve",
+    "description": "Xteve是一个在线电视源的代理工具。",
+    "description_en": "Xteve is a proxy tool for online TV sources.",
+    "tags": [
+      "multimedia",
+      "net"
+    ],
+    "website": "https://github.com/xteve-project/xTeVe",
+    "author": "xteve-project",
+    "version": "1.0.2",
+    "release": "20230619",
+    "depends": "+luci-app-xteve +luci-i18n-xteve-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/xteve",
+    "meta_dir": "apps/xteve/app-meta-xteve"
+  },
+  {
+    "id": "xunlei",
+    "title": "迅雷下载",
+    "description": "迅雷是一个常用的下载工具。本插件可部署 cnk3x 封装的 Docker 版迅雷。",
+    "description_en": "Xunlei is a common download tool. The Docker image is provided by cnk3x.",
+    "tags": [
+      "download",
+      "tool"
+    ],
+    "website": "https://www.xunlei.com/",
+    "author": "xunlei/cnk3x",
+    "version": "1.0.3",
+    "release": "20240523",
+    "depends": "+luci-app-xunlei +luci-i18n-xunlei-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/xunlei",
+    "meta_dir": "apps/xunlei/app-meta-xunlei"
+  },
+  {
+    "id": "zdinnav",
+    "title": "智淀导航",
+    "description": "智淀导航：网页书签管理工具，搭建专属于你的导航网站。",
+    "description_en": "ZdinNav:A web bookmark manager to build your own personalized navigation site.",
+    "tags": [
+      "net",
+      "tool"
+    ],
+    "website": "https://github.com/MyTkme/ZdinNav-Link",
+    "author": "tkme",
+    "version": "1.1.1",
+    "release": "1",
+    "depends": "+luci-app-zdinnav +luci-i18n-zdinnav-zh-cn +docker-deps",
+    "luci_entry": "/cgi-bin/luci/admin/services/zdinnav",
+    "meta_dir": "apps/zdinnav/app-meta-zdinnav"
+  }
+]

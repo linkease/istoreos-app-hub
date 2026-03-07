@@ -67,6 +67,7 @@ make syncapps-app APP=istorepanel
 - 本仓库是“按插件聚合”，不是按类型拆分。
 - 任何功能修改，优先在 `apps/<app-name>/` 内完成。
 - 同步使用 `syncapps.yaml` + `make syncapps-*`，先用 `--dry-run`/`DRY=1` 预演。
+- 需要 AI 快速知道“仓库里有哪些软件”：先运行 `make apps-catalog` 生成 `docs/apps-catalog.min.md`，并在对话开头引用它（模板见 `docs/ai-prompt.md`）。
 
 建议给 AI 的任务模板：
 
