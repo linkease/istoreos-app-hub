@@ -1,0 +1,10 @@
+name: "deploy-single-app-dry"
+description: "Dry-run deploy for DEPLOY_SINGLE_APP (show payload)"
+tags: ["deploy", "remote", "debug", "dry-run"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make deploy-single-app-dry"
+

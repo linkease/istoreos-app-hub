@@ -1,0 +1,10 @@
+name: "deploy-single-app"
+description: "Deploy one fixed app to remote (env DEPLOY_SINGLE_APP; recommended with .it-runner/.env.local)"
+tags: ["deploy", "remote", "debug"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make deploy-single-app"
+

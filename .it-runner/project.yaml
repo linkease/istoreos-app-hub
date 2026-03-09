@@ -5,4 +5,5 @@ cacheDir: ".it-runner/cache"
 envFiles:
   - ".it-runner/envs/shared.env"
   - ".it-runner/envs/secrets.env"
+  - ".it-runner/.env.local"
 enabled: true

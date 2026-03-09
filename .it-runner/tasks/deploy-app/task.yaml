@@ -1,0 +1,13 @@
+name: "deploy-app"
+description: "Deploy app code (LuCI/root/files) to remote test box (env APP or DEPLOY_SINGLE_APP)"
+tags: ["deploy", "remote", "debug"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - >-
+      bash -ceu 'args=(deploy-app);
+      [[ -n "${APP:-}" ]] && args+=("APP=${APP}");
+      make "${args[@]}"'
+

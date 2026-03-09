@@ -1,0 +1,13 @@
+name: "deploy-app-dry"
+description: "Dry-run deploy (show payload) for one app (env APP or DEPLOY_SINGLE_APP)"
+tags: ["deploy", "remote", "debug", "dry-run"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - >-
+      bash -ceu 'args=(deploy-app-dry);
+      [[ -n "${APP:-}" ]] && args+=("APP=${APP}");
+      make "${args[@]}"'
+

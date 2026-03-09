@@ -1,0 +1,10 @@
+name: "apps-catalog"
+description: "Generate docs/apps-catalog*.{md,json}"
+tags: ["docs", "catalog"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make apps-catalog"
+

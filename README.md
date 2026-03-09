@@ -60,6 +60,39 @@ make syncapps-all
 make syncapps-app APP=istorepanel
 ```
 
+## 远程快速部署（联调）
+
+用于把 `apps/<id>/` 下“依赖少、路径规律明显”的代码快速覆盖到目标测试路由器，方便调试（不负责部署/解压预编译二进制）。
+
+1) 在 `.it-runner/.env.local` 配置目标机（此文件被 `.gitignore` 忽略）：
+
+```bash
+DEPLOY_HOST=192.168.1.1
+DEPLOY_USER=root
+DEPLOY_PORT=22
+DEPLOY_SINGLE_APP=kai
+```
+
+2) 运行：
+
+```bash
+# 先看会覆盖哪些文件
+make deploy-app-dry APP=kai
+
+# 执行部署（默认会在远端 /tmp 下做一次备份）
+make deploy-app APP=kai
+```
+
+常用可选环境变量：
+
+- `DEPLOY_BACKUP=0`：不备份直接覆盖（更快，但不安全）
+- `DEPLOY_RESTART=1` + `DEPLOY_SERVICES="kai"`：部署后重启指定 init.d 服务
+- `DEPLOY_RESTART_UHTTPD=1`：部署后 reload/restart `uhttpd`（LuCI 变更偶尔需要）
+- `DEPLOY_CHECK_LUCI_COMPAT=0`：禁用 Lua LuCI 依赖检查（默认会在目标机缺少 `luci-compat` 时拒绝部署 Lua 控制器/模型文件，避免把 LuCI 部署“部署崩”）
+- `DEPLOY_CHECK_UBUS=0`：禁用 ubus 可用性检查（默认在目标机 ubus 不可用时拒绝部署 Lua LuCI 文件）
+
+实现见：`tools/deploy-to-remote.sh`（支持从 LuCI 目录、Makefile 里的 `./files -> $(1)/...` 映射、以及 `root/`/嵌套 `files/` overlay 收集待部署文件）。
+
 ## AI 快速上下文（重点）
 
 给 AI 协作时，请优先告知以下信息：

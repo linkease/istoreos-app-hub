@@ -1,0 +1,10 @@
+name: "build-appcatalog"
+description: "Build appcatalog binary to bin/"
+tags: ["build", "catalog"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - "make build-appcatalog"
+
