@@ -130,7 +130,7 @@ apps:
               remote: nas-packages/network/services/fastnet
         luci:
             - local: apps/fastnet/luci-app-fastnet
-              remote: openwrt-app-actions/applications/luci-app-fastnet
+              remote: nas-packages-luci/applications/luci-app-fastnet
         meta:
             - local: apps/fastnet/app-meta-fastnet
               remote: openwrt-app-meta/applications/app-meta-fastnet
