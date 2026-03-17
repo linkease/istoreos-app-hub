@@ -1,0 +1,11 @@
+name: "openclawmgr-install"
+description: "Run /usr/libexec/istorec/openclawmgr.sh install on remote test box and save logs"
+tags: ["openclawmgr", "remote", "install", "debug"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - >-
+      bash -ceu './tools/remote-openclawmgr-install.sh'
+

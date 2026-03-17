@@ -20,8 +20,6 @@ help:
   "  make apps-catalog           Generate docs/apps-catalog*.{md,json}" \
   "  make deploy-app             Deploy one app to remote (APP=..., uses .it-runner/.env.local if present)" \
   "  make deploy-app-dry         Show what would be deployed (APP=...)" \
-  "  make deploy-single-app      Deploy DEPLOY_SINGLE_APP to remote" \
-  "  make deploy-single-app-dry  Dry-run for DEPLOY_SINGLE_APP" \
   "  make tidy-tools             Run go mod tidy (tools)" \
   "  make syncapps-autogen       Scan legacy -> update config" \
   "  make syncapps-autogen-dry   Dry-run autogen" \
@@ -39,7 +37,7 @@ help:
   "  SYNCAPPS_CONFIG=<path>      Default: syncapps.yaml" \
   "" \
   "Remote deploy env (optional):" \
-  "  DEPLOY_HOST, DEPLOY_USER, DEPLOY_PORT, DEPLOY_SINGLE_APP"'
+  "  DEPLOY_HOST, DEPLOY_USER, DEPLOY_PORT"'
 
 $(BIN_DIR):
 >@mkdir -p "$(BIN_DIR)"
@@ -72,23 +70,15 @@ tidy-tools:
 
 .PHONY: deploy-app
 deploy-app:
->@bash -ceu 'app="$${APP:-$${DEPLOY_SINGLE_APP:-}}"; \
+>@bash -ceu 'app="$${APP:-}"; \
 	[[ -n "$$app" ]] || { echo "error: APP is required (e.g. make $@ APP=kai)"; exit 2; }; \
 	./tools/deploy-to-remote.sh --app "$$app"'
 
 .PHONY: deploy-app-dry
 deploy-app-dry:
->@bash -ceu 'app="$${APP:-$${DEPLOY_SINGLE_APP:-}}"; \
+>@bash -ceu 'app="$${APP:-}"; \
 	[[ -n "$$app" ]] || { echo "error: APP is required (e.g. make $@ APP=kai)"; exit 2; }; \
 	./tools/deploy-to-remote.sh --app "$$app" --dry-run'
-
-.PHONY: deploy-single-app
-deploy-single-app:
->@./tools/deploy-to-remote.sh
-
-.PHONY: deploy-single-app-dry
-deploy-single-app-dry:
->@./tools/deploy-to-remote.sh --dry-run
 
 .PHONY: syncapps-autogen
 syncapps-autogen: build-syncapps-autogen

@@ -126,3 +126,4 @@ make deploy-app APP=kai
 
 - 增加 “Strict 模式”（状态文件/冲突检测/删除传播策略）。
 - 在 CI 增加 dry-run + 变更清单校验，避免误同步。
+1

@@ -586,3 +586,11 @@ apps:
         meta:
             - local: apps/zdinnav/app-meta-zdinnav
               remote: openwrt-app-meta/applications/app-meta-zdinnav
+    openclawmgr:
+        services: []
+        luci:
+            - local: apps/openclawmgr/luci-app-openclawmgr
+              remote: openwrt-app-actions/applications/luci-app-openclawmgr
+        meta:
+            - local: apps/openclawmgr/app-meta-openclawmgr
+              remote: openwrt-app-meta/applications/app-meta-openclawmgr

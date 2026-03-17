@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Web</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <h1>File Web</h1>
+        <p class="subtitle">Displays the file list from the Go server.</p>
+      </header>
+
+      <section class="controls">
+        <label class="field">
+          <span>API base URL (optional)</span>
+          <input id="baseUrl" placeholder="e.g. http://localhost:8080" />
+        </label>
+        <label class="checkbox">
+          <input id="showHidden" type="checkbox" />
+          <span>Show hidden files</span>
+        </label>
+        <button id="refreshBtn" type="button">Refresh</button>
+      </section>
+
+      <section class="card">
+        <div class="status">
+          <span id="statusText">Idle</span>
+        </div>
+        <table class="table" aria-label="File list">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th class="right">Size</th>
+              <th>Modified</th>
+            </tr>
+          </thead>
+          <tbody id="fileTbody"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+

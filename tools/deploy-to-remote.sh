@@ -10,6 +10,7 @@ What it deploys (best-effort):
       luasrc/{controller,model,view} -> /usr/lib/lua/luci/{controller,model,view}
       root/                          -> /
       htdocs/                        -> /www
+      po/<lang>/*.po                 -> compile on target to /usr/lib/lua/luci/i18n/*.lmo (if po2lmo available)
   - Non-LuCI package "files/" that are explicitly installed by its Makefile:
       $(INSTALL_*) ./files/<src> $(1)/<dst> -> /<dst>
   - Non-LuCI package root/ overlays -> /
@@ -97,6 +98,23 @@ copy_file_into() {
   cp -a "$src_path" "$dst_path"
 }
 
+stage_luci_po_files() {
+  local luci_dir="$1"
+  local staging_dir="$2"
+  local po_file lang domain
+
+  [[ -d "${luci_dir}/po" ]] || return 0
+
+  shopt -s nullglob
+  for po_file in "${luci_dir}"/po/*/*.po; do
+    [[ -f "$po_file" ]] || continue
+    lang="$(basename "$(dirname "$po_file")")"
+    domain="$(basename "$po_file")"
+    copy_file_into "$po_file" "${staging_dir}/.istore-deploy-meta/luci-po/${lang}/${domain}"
+  done
+  shopt -u nullglob
+}
+
 main() {
   need_cmd ssh
   need_cmd scp
@@ -124,10 +142,9 @@ main() {
   fi
 
   if [[ -z "${app_id:-}" ]]; then
-    app_id="${DEPLOY_SINGLE_APP:-}"
+    die "--app is required"
   fi
-
-  [[ -n "$app_id" ]] || die "--app is required (or set DEPLOY_SINGLE_APP in .it-runner/.env.local)"
+  [[ -n "$app_id" ]] || die "--app is required"
 
   local deploy_host="${DEPLOY_HOST:-}"
   local deploy_user="${DEPLOY_USER:-root}"
@@ -193,6 +210,10 @@ main() {
     fi
     if [[ -d "${luci_dir}/htdocs" ]]; then
       copy_tree_into "${luci_dir}/htdocs" "${STAGING_DIR}/www"
+      any="1"
+    fi
+    if [[ -d "${luci_dir}/po" ]]; then
+      stage_luci_po_files "${luci_dir}" "${STAGING_DIR}"
       any="1"
     fi
   done
@@ -270,6 +291,7 @@ services="${deploy_services}"
 check_luci_compat="${deploy_check_luci_compat}"
 check_ubus="${deploy_check_ubus}"
 payload_has_lua_luci="${payload_has_lua_luci}"
+overwrite_config="${DEPLOY_OVERWRITE_CONFIG:-0}"
 
 files="\$(tar -tzf "\$payload" | sed 's#^\\./##' | sed '/\\/\$/d' | sed '/^$/d')"
 
@@ -285,17 +307,28 @@ if [ "\$check_luci_compat" = "1" ] && [ "\$payload_has_lua_luci" = "1" ]; then
 fi
 
 if [ "\$check_ubus" = "1" ] && [ "\$payload_has_lua_luci" = "1" ]; then
+  ubus_ok="0"
+
   if command -v ubus >/dev/null 2>&1; then
-    if ! ubus -s /var/run/ubus/ubus.sock list >/dev/null 2>&1; then
-      echo "error: ubus is not reachable on target (Lua LuCI bridge requires ubus)." >&2
-      echo "hint: try fixing ubus/rpcd, e.g.:" >&2
-      echo "  rm -f /var/run/ubus/ubus.sock" >&2
-      echo "  /sbin/ubusd -s /var/run/ubus/ubus.sock &" >&2
-      echo "  killall rpcd; /sbin/rpcd -s /var/run/ubus/ubus.sock -t 30 &" >&2
-      echo "hint: or reboot the router" >&2
-      echo "hint: or set DEPLOY_CHECK_UBUS=0 to bypass this check" >&2
-      exit 4
+    if ubus -s /var/run/ubus/ubus.sock list >/dev/null 2>&1; then
+      ubus_ok="1"
     fi
+  elif command -v lua >/dev/null 2>&1; then
+    # Some builds don't ship the ubus CLI, but LuCI still requires a working ubus.
+    if lua -e 'local ok,ubus=pcall(require,"ubus"); if not ok then os.exit(2) end; local c=ubus.connect("/var/run/ubus/ubus.sock"); if not c then os.exit(3) end; local r=c:call("system","board",{}); os.exit(r and 0 or 1)' >/dev/null 2>&1; then
+      ubus_ok="1"
+    fi
+  fi
+
+  if [ "\$ubus_ok" != "1" ]; then
+    echo "error: ubus is not reachable or missing required objects on target (Lua LuCI bridge requires ubus system.board)." >&2
+    echo "hint: try fixing ubus/rpcd, e.g.:" >&2
+    echo "  rm -f /var/run/ubus/ubus.sock" >&2
+    echo "  /sbin/ubusd -s /var/run/ubus/ubus.sock &" >&2
+    echo "  killall rpcd; /sbin/rpcd -s /var/run/ubus/ubus.sock -t 30 &" >&2
+    echo "hint: or reboot the router" >&2
+    echo "hint: or set DEPLOY_CHECK_UBUS=0 to bypass this check" >&2
+    exit 4
   fi
 fi
 
@@ -303,16 +336,69 @@ backup_dir=""
 if [ "\$backup_enabled" = "1" ]; then
   backup_dir="\$(mktemp -d "/tmp/istore-deploy-backup-${app_id}.XXXXXX")"
   echo "Backup dir: \$backup_dir"
-  echo "\$files" | while IFS= read -r p; do
-    [ -n "\$p" ] || continue
-    if [ -e "/\$p" ] || [ -L "/\$p" ]; then
-      mkdir -p "\$backup_dir/\$(dirname "\$p")"
-      cp -a "/\$p" "\$backup_dir/\$p"
+echo "\$files" | while IFS= read -r p; do
+  [ -n "\$p" ] || continue
+  case "\$p" in
+    .istore-deploy-meta/*) continue ;;
+  esac
+  if [ -e "/\$p" ] || [ -L "/\$p" ]; then
+    mkdir -p "\$backup_dir/\$(dirname "\$p")"
+    cp -a "/\$p" "\$backup_dir/\$p"
     fi
   done
 fi
 
-tar -xzf "\$payload" -C /
+staging_dir="\$(mktemp -d "/tmp/istore-deploy-staging-${app_id}.XXXXXX")"
+tar -xzf "\$payload" -C "\$staging_dir"
+
+# Copy files into / but avoid clobbering existing UCI configs by default.
+# Deploying via tar extraction bypasses opkg conffile semantics, so this keeps
+# local runtime settings intact unless DEPLOY_OVERWRITE_CONFIG=1 is set.
+echo "\$files" | while IFS= read -r p; do
+  [ -n "\$p" ] || continue
+  case "\$p" in
+    .istore-deploy-meta/*) continue ;;
+  esac
+  src="\$staging_dir/\$p"
+  dst="/\$p"
+
+  case "\$p" in
+    etc/config/*)
+      if [ "\$overwrite_config" != "1" ] && [ -e "\$dst" ]; then
+        echo "Skip existing config: \$dst"
+        continue
+      fi
+      ;;
+  esac
+
+  mkdir -p "\$(dirname "\$dst")"
+  cp -a "\$src" "\$dst"
+done
+
+po2lmo_bin=""
+if command -v po2lmo >/dev/null 2>&1; then
+  po2lmo_bin="po2lmo"
+elif command -v luci-po2lmo >/dev/null 2>&1; then
+  po2lmo_bin="luci-po2lmo"
+fi
+
+if [ -d "\$staging_dir/.istore-deploy-meta/luci-po" ]; then
+  if [ -n "\$po2lmo_bin" ]; then
+    find "\$staging_dir/.istore-deploy-meta/luci-po" -type f -name '*.po' | while IFS= read -r po; do
+      rel="\${po#\$staging_dir/.istore-deploy-meta/luci-po/}"
+      lang="\${rel%%/*}"
+      domain="\$(basename "\$po" .po)"
+      out="/usr/lib/lua/luci/i18n/\${domain}.\${lang}.lmo"
+      mkdir -p "\$(dirname "\$out")"
+      "\$po2lmo_bin" "\$po" "\$out"
+      echo "Compiled i18n: \$out"
+    done
+  else
+    echo "warn: target has no po2lmo/luci-po2lmo; LuCI translations were not deployed" >&2
+  fi
+fi
+
+rm -rf "\$staging_dir" || true
 
 echo "\$files" | while IFS= read -r p; do
   case "\$p" in

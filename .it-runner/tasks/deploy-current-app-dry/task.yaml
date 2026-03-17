@@ -1,0 +1,12 @@
+name: "deploy-current-app-dry"
+description: "Dry-run deploy for APP (show payload)"
+tags: ["deploy", "remote", "debug", "dry-run"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - >-
+      bash -ceu 'app="${APP:-}";
+      [[ -n "${app}" ]] || { echo "error: set APP (e.g. APP=openclaw)" >&2; exit 2; };
+      make deploy-app-dry "APP=${app}"'

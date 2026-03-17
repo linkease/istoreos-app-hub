@@ -1,0 +1,15 @@
+name: "deploy-current-app"
+description: "Deploy APP to remote and restart service (defaults to APP id)"
+tags: ["deploy", "remote", "debug"]
+version: "1"
+workspace:
+  workdir: "."
+run:
+  cmds:
+    - >-
+      bash -ceu 'app="${APP:-}";
+      [[ -n "${app}" ]] || { echo "error: set APP (e.g. APP=openclaw)" >&2; exit 2; };
+      export DEPLOY_RESTART="${DEPLOY_RESTART:-1}";
+      export DEPLOY_RESTART_UHTTPD="${DEPLOY_RESTART_UHTTPD:-1}";
+      export DEPLOY_SERVICES="${DEPLOY_SERVICES:-$app}";
+      make deploy-app "APP=${app}"'
