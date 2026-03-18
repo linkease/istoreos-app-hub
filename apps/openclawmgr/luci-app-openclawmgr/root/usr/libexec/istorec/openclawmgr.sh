@@ -308,11 +308,9 @@ download() {
 
 write_installer_log() {
 	local msg="$1"
-	mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null || true
 	local line
 	line="$(printf "%s [%s] %s" "$(log_ts)" "$APP" "$msg")"
 	printf "%s\n" "$line"
-	printf "%s\n" "$line" >> "$LOG_FILE"
 }
 
 openclaw_bin() {
@@ -689,6 +687,73 @@ install_openclaw() {
 	local flags="" npm_registry="" effective_registry=""
 	[ -x "$NPM_BIN" ] || return 1
 
+	ensure_git() {
+		ensure_remote_https() {
+			command -v git >/dev/null 2>&1 || return 1
+			local execp
+			execp="$(git --exec-path 2>/dev/null || true)"
+			[ -n "$execp" ] || return 1
+			[ -x "$execp/git-remote-https" ] && return 0
+			# Some builds ship helpers under libexec paths; exec-path should cover it,
+			# but keep a fallback in case of unusual layouts.
+			[ -x /usr/lib/git-core/git-remote-https ] && return 0
+			[ -x /usr/libexec/git-core/git-remote-https ] && return 0
+			return 1
+		}
+
+		command -v git >/dev/null 2>&1 || {
+			write_installer_log "git not found; some npm dependencies require git. Trying to install git via opkg."
+			local pm=""
+			if command -v is-opkg >/dev/null 2>&1; then
+				pm="is-opkg"
+			elif command -v opkg >/dev/null 2>&1; then
+				pm="opkg"
+			fi
+			if [ -z "$pm" ]; then
+				write_installer_log "git is required but opkg/is-opkg is not available; please install git and retry."
+				return 1
+			fi
+
+			if "$pm" install git >/dev/null 2>&1; then
+				command -v git >/dev/null 2>&1 || true
+			fi
+		}
+
+		command -v git >/dev/null 2>&1 || {
+			write_installer_log "git is required but could not be installed automatically; please opkg install git and retry."
+			return 1
+		}
+
+		# Ensure HTTPS transport is available (git-remote-https), required for git URL rewrites.
+		if ensure_remote_https; then
+			return 0
+		fi
+
+		write_installer_log "git HTTPS transport helper not found (git-remote-https); trying to install git-http/git-https."
+		local pm=""
+		if command -v is-opkg >/dev/null 2>&1; then
+			pm="is-opkg"
+		elif command -v opkg >/dev/null 2>&1; then
+			pm="opkg"
+		fi
+		if [ -z "$pm" ]; then
+			write_installer_log "git-remote-https is required but opkg/is-opkg is not available; please install git-http (or equivalent) and retry."
+			return 1
+		fi
+
+		"$pm" install git-http >/dev/null 2>&1 || true
+		"$pm" install git-https >/dev/null 2>&1 || true
+
+		if ensure_remote_https; then
+			return 0
+		fi
+
+		write_installer_log "git-remote-https is required but could not be installed automatically; please opkg install git-http (or git-https) and retry."
+		return 1
+	}
+
+	ensure_git || return 1
+
 	if is_musl; then
 		flags="--ignore-scripts"
 	fi
@@ -698,7 +763,7 @@ install_openclaw() {
 	fi
 
 	write_installer_log "Installing OpenClaw from npm"
-	write_installer_log "Node.js: $($NODE_BIN --version 2>/dev/null || echo unknown), npm: $($NPM_BIN --version 2>/dev/null || echo unknown)"
+	write_installer_log "Node.js: $(PATH=\"${NODE_DIR}/bin:/usr/sbin:/usr/bin:/sbin:/bin\" \"$NODE_BIN\" --version 2>/dev/null || echo unknown), npm: $(PATH=\"${NODE_DIR}/bin:/usr/sbin:/usr/bin:/sbin:/bin\" \"$NPM_BIN\" --version 2>/dev/null || echo unknown)"
 	write_installer_log "npm prefix: $GLOBAL_DIR, cache: ${BASE_DIR}/npm-cache, musl: $(is_musl && echo yes || echo no) ${flags:+($flags)}"
 	write_installer_log "npm registry: ${npm_registry:-default}"
 	if [ -n "$npm_registry" ]; then
@@ -722,6 +787,7 @@ install_openclaw() {
 		mkdir -p "$DATA_DIR" 2>/dev/null || true
 		# Use --add because url.*.insteadOf is multi-valued (git config without --add overwrites).
 		git config --file "$DATA_DIR/.gitconfig" --add url."https://github.com/".insteadOf "ssh://git@github.com/" 2>/dev/null || true
+		git config --file "$DATA_DIR/.gitconfig" --add url."https://github.com/".insteadOf "ssh://git@github.com" 2>/dev/null || true
 		git config --file "$DATA_DIR/.gitconfig" --add url."https://github.com/".insteadOf "git@github.com:" 2>/dev/null || true
 	fi
 
@@ -786,28 +852,26 @@ install_openclaw() {
 
 	local npm_rc=0
 	wait "$npmpid" || npm_rc=$?
-	if [ "$npm_rc" -ne 0 ]; then
-		write_installer_log "npm install failed (rc=$npm_rc); dumping recent output"
-		kill "$tailpid" 2>/dev/null || true
-		wait "$tailpid" 2>/dev/null || true
-		tail -n 200 "$tmp" >> "$LOG_FILE" 2>/dev/null || true
-		rm -f "$tmp" 2>/dev/null || true
-		return 1
-	fi
+		if [ "$npm_rc" -ne 0 ]; then
+			write_installer_log "npm install failed (rc=$npm_rc); dumping recent output"
+			kill "$tailpid" 2>/dev/null || true
+			wait "$tailpid" 2>/dev/null || true
+			rm -f "$tmp" 2>/dev/null || true
+			return 1
+		fi
 
 	local end_ts elapsed_s elapsed_h
 	end_ts="$(date +%s 2>/dev/null || echo 0)"
 	elapsed_s=$((end_ts - start_ts))
 	elapsed_h="$(fmt_elapsed "$elapsed_s")"
-	write_installer_log "npm install finished (${elapsed_h} elapsed)"
-	kill "$tailpid" 2>/dev/null || true
-	wait "$tailpid" 2>/dev/null || true
-	tail -n 200 "$tmp" >> "$LOG_FILE" 2>/dev/null || true
-	rm -f "$tmp" 2>/dev/null || true
-	find_entry >/dev/null 2>&1 || return 1
-	write_installer_log "OpenClaw installed: $(openclaw_version || echo unknown)"
-	return 0
-}
+		write_installer_log "npm install finished (${elapsed_h} elapsed)"
+		kill "$tailpid" 2>/dev/null || true
+		wait "$tailpid" 2>/dev/null || true
+		rm -f "$tmp" 2>/dev/null || true
+		find_entry >/dev/null 2>&1 || return 1
+		write_installer_log "OpenClaw installed: $(openclaw_version || echo unknown)"
+		return 0
+	}
 
 	do_install() {
 		acquire_lock
@@ -1103,11 +1167,10 @@ esac
 
 NODE_DIR="${BASE_DIR}/node"
 GLOBAL_DIR="${BASE_DIR}/global"
-DATA_DIR="${BASE_DIR}/data"
-LOG_FILE="${BASE_DIR}/log/installer.log"
+	DATA_DIR="${BASE_DIR}/data"
 
-NODE_BIN="${NODE_DIR}/bin/node"
-NPM_BIN="${NODE_DIR}/bin/npm"
+	NODE_BIN="${NODE_DIR}/bin/node"
+	NPM_BIN="${NODE_DIR}/bin/npm"
 
 case "$ACTION" in
 	install|upgrade)

@@ -34,11 +34,10 @@
     activeTab: "basic",
     savingSection: "",
     lastAppliedAt: "",
-    showLogModal: false,
-    logText: "",
-    logTimer: null,
     statusTimer: null,
-    installWatchTimer: null
+    installWatchTimer: null,
+    lastTaskRunning: false,
+    taskLogOpenTs: 0
   };
   var styleText = "";
 
@@ -247,45 +246,22 @@
       '</svg>';
   }
 
-  function openLogModal() {
-    state.showLogModal = true;
-    if (state.logTimer) {
-      window.clearTimeout(state.logTimer);
-      state.logTimer = null;
-    }
-    pollLogs();
-    render();
+  function taskWindowAvailable() {
+    return !!(window.taskd && window.taskd.show_log);
   }
 
-  function closeLogModal() {
-    state.showLogModal = false;
-    if (state.logTimer) {
-      window.clearTimeout(state.logTimer);
-      state.logTimer = null;
-    }
-    refreshStatus();
-  }
-
-  function pollLogs() {
-    if (!state.showLogModal) {
+  function showTaskLog(taskId) {
+    taskId = taskId || "openclawmgr";
+    if (!taskWindowAvailable()) {
+      window.alert("任务窗口不可用（未加载 taskd/xterm）。请安装 luci-lib-taskd 和 luci-lib-xterm，然后强制刷新页面。");
       return;
     }
-    if (state.logTimer) {
-      window.clearTimeout(state.logTimer);
-      state.logTimer = null;
+    var now = Date.now ? Date.now() : (+new Date());
+    if (state.taskLogOpenTs && now - state.taskLogOpenTs < 1500) {
+      return;
     }
-    request(config.logUrl + "?n=200").then(function(data) {
-      state.logText = (data && data.log) || "";
-      refreshStatus(function() {
-        if (state.showLogModal) {
-          state.logTimer = window.setTimeout(pollLogs, 3000);
-        }
-      });
-    }).catch(function() {
-      if (state.showLogModal) {
-        state.logTimer = window.setTimeout(pollLogs, 5000);
-      }
-    });
+    state.taskLogOpenTs = now;
+    window.taskd.show_log(taskId);
   }
 
   function stopStatusPolling() {
@@ -317,9 +293,6 @@
 
   function ensureInstallWatch() {
     stopInstallWatch();
-    if (state.status && state.status.installing && state.showLogModal) {
-      return;
-    }
     state.installWatchTimer = window.setTimeout(function() {
       refreshStatus(function() {
         ensureInstallWatch();
@@ -345,16 +318,6 @@
     }
 
     tick(rounds);
-  }
-
-  function scrollLogToBottom() {
-    if (!state.showLogModal) {
-      return;
-    }
-    var body = root.querySelector(".oclm-log-body");
-    if (body) {
-      body.scrollTop = body.scrollHeight;
-    }
   }
 
   function render() {
@@ -463,27 +426,9 @@
       '</div>' +
       '</div>' +
       '</section>' +
-
-      (state.showLogModal ? (
-        '<div class="oclm-log-modal" data-close-log="1">' +
-        '<div class="oclm-log-dialog" onclick="event.stopPropagation()">' +
-        '<div class="oclm-log-head">' +
-        '<h3>安装日志</h3>' +
-        '<div class="oclm-log-actions">' +
-        '<button class="oclm-button" type="button" data-refresh-log="1">刷新</button>' +
-        '<button class="oclm-button" type="button" data-copy-log="1">复制日志</button>' +
-        '<button class="oclm-button" type="button" data-close-log-btn="1">关闭</button>' +
-        '</div>' +
-        '</div>' +
-        '<div class="oclm-log-body"><pre>' + escapeHtml(state.logText || "日志为空") + '</pre></div>' +
-        '</div>' +
-        '</div>'
-      ) : '') +
-
       '</div></div></div>';
 
     bindEvents();
-    scrollLogToBottom();
   }
 
   function fieldInput(label, control) {
@@ -547,9 +492,15 @@
         if (op === "purge" && !window.confirm("彻底清理会删除运行时和数据目录。确认继续？")) return;
         postForm(config.opUrl, { op: op }).then(function(rv) {
           if (!rv || !rv.ok) {
+            if (rv && rv.busy && rv.running_task_id) {
+              showTaskLog(rv.running_task_id);
+              return;
+            }
             window.alert((rv && rv.error) || "操作失败");
             return;
           }
+          state.lastTaskRunning = true;
+          showTaskLog((rv && (rv.running_task_id || rv.task_id)) || "openclawmgr");
           scheduleStatusRefresh(op === "restart" ? 8 : 6, 1000);
         });
       };
@@ -557,7 +508,6 @@
 
     Array.prototype.forEach.call(root.querySelectorAll("[data-install-action]"), function(el) {
       el.onclick = function() {
-        openLogModal();
         var accelerated = !!(root.getElementById("oclm-install-accelerated") && root.getElementById("oclm-install-accelerated").checked);
         if (!state.status || state.status.installing) {
           return;
@@ -578,23 +528,23 @@
         }).then(function(rv) {
           if (!rv) return;
           if (!rv || !rv.ok) {
+            if (rv && rv.busy && rv.running_task_id) {
+              showTaskLog(rv.running_task_id);
+              return;
+            }
             state.status.installing = false;
             render();
             window.alert((rv && rv.error) || "启动安装失败");
             return;
           }
+          state.lastTaskRunning = true;
+          showTaskLog((rv && (rv.running_task_id || rv.task_id)) || "openclawmgr");
           scheduleStatusRefresh(10, 1000);
         }).catch(function() {
           state.status.installing = false;
           render();
           window.alert("启动安装失败");
         });
-      };
-    });
-
-    Array.prototype.forEach.call(root.querySelectorAll("[data-close-log], [data-close-log-btn]"), function(el) {
-      el.onclick = function() {
-        closeLogModal();
       };
     });
 
@@ -615,18 +565,6 @@
         state.form.install_accelerated = !!installAccelerated.checked;
       };
     }
-
-    Array.prototype.forEach.call(root.querySelectorAll("[data-refresh-log]"), function(el) {
-      el.onclick = function() {
-        pollLogs();
-      };
-    });
-
-    Array.prototype.forEach.call(root.querySelectorAll("[data-copy-log]"), function(el) {
-      el.onclick = function() {
-        copyText(state.logText || "");
-      };
-    });
 
     Array.prototype.forEach.call(root.querySelectorAll("[data-copy-token-url]"), function(el) {
       el.onclick = function() {
@@ -759,6 +697,10 @@
   function refreshStatus(done) {
     request(config.statusUrl).then(function(data) {
       state.status = data || {};
+      if (state.status && state.status.task_running && !state.lastTaskRunning) {
+        showTaskLog("openclawmgr");
+      }
+      state.lastTaskRunning = !!(state.status && state.status.task_running);
       render();
       ensureInstallWatch();
       if (typeof done === "function") {

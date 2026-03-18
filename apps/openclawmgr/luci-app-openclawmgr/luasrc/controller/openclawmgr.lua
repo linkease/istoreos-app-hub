@@ -14,7 +14,6 @@ function index()
 	entry({"admin", "services", "openclawmgr", "op"}, call("action_op")).leaf = true
 	entry({"admin", "services", "openclawmgr", "config_data"}, call("action_config_data")).leaf = true
 	entry({"admin", "services", "openclawmgr", "apply_config"}, call("action_apply_config")).leaf = true
-	entry({"admin", "services", "openclawmgr", "log"}, call("action_log")).leaf = true
 
 	entry({"admin", "services", "openclawmgr", "diag_info"}, call("action_diag_info")).leaf = true
 	entry({"admin", "services", "openclawmgr", "diag_run"}, call("action_diag_run")).leaf = true
@@ -355,21 +354,6 @@ function action_status()
 		token_url = token_url,
 		url = token_url,
 	})
-end
-
-function action_log()
-	local sys = require "luci.sys"
-	local util = require "luci.util"
-	local uci = require "luci.model.uci".cursor()
-	local base_dir = uci:get("openclawmgr", "main", "base_dir") or "/opt/openclawmgr"
-	local log_file = base_dir .. "/log/installer.log"
-
-	local n = tonumber((require "luci.http").formvalue("n") or "") or 200
-	if n < 10 then n = 10 end
-	if n > 2000 then n = 2000 end
-
-	local content = sys.exec("tail -n " .. n .. " " .. util.shellquote(log_file) .. " 2>/dev/null") or ""
-	write_json({ ok = true, log = content })
 end
 
 function action_apply_config()

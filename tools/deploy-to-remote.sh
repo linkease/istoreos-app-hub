@@ -303,6 +303,13 @@ if [ "\$check_luci_compat" = "1" ] && [ "\$payload_has_lua_luci" = "1" ]; then
       echo "hint: or set DEPLOY_CHECK_LUCI_COMPAT=0 to bypass this check" >&2
       exit 3
     fi
+    if ! opkg status rpcd-mod-luci >/dev/null 2>&1; then
+      echo "error: deploying Lua LuCI files but rpcd-mod-luci is not installed on target (LuCI ucode -> Lua bridge)." >&2
+      echo "hint: opkg update && opkg install rpcd-mod-luci" >&2
+      echo "hint: then restart rpcd: /etc/init.d/rpcd restart" >&2
+      echo "hint: or set DEPLOY_CHECK_LUCI_COMPAT=0 to bypass this check" >&2
+      exit 3
+    fi
   fi
 fi
 
@@ -329,6 +336,18 @@ if [ "\$check_ubus" = "1" ] && [ "\$payload_has_lua_luci" = "1" ]; then
     echo "hint: or reboot the router" >&2
     echo "hint: or set DEPLOY_CHECK_UBUS=0 to bypass this check" >&2
     exit 4
+  fi
+
+  # LuCI ucode -> Lua bridge uses ubus object provided by rpcd-mod-luci.
+  if command -v ubus >/dev/null 2>&1; then
+    if ! ubus -s /var/run/ubus/ubus.sock list luci >/dev/null 2>&1; then
+      echo "error: ubus object 'luci' is missing (rpcd-mod-luci not running/loaded); LuCI will crash when loading Lua controllers." >&2
+      echo "hint: /etc/init.d/rpcd restart" >&2
+      echo "hint: opkg install rpcd-mod-luci (if missing)" >&2
+      echo "hint: or reboot the router" >&2
+      echo "hint: or set DEPLOY_CHECK_UBUS=0 to bypass this check" >&2
+      exit 4
+    fi
   fi
 fi
 
