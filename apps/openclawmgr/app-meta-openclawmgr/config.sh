@@ -4,10 +4,18 @@
 
 DEFAULT_BASE_DIR="$ISTORE_CONF_DIR/OpenClawMgr"
 
-ENABLED=1
+ENABLED="$(uci -q get openclawmgr.main.enabled 2>/dev/null || true)"
+if [ -z "$ENABLED" ]; then
+	# Safety: do not auto-enable on (re)install; let user explicitly enable in LuCI.
+	ENABLED=0
+fi
 if [ -n "$ISTORE_DONT_START" ]; then
 	ENABLED=0
 fi
+case "$ENABLED" in
+	1|true|yes|on) ENABLED=1 ;;
+	*) ENABLED=0 ;;
+esac
 
 uci -q set openclawmgr.main=openclawmgr >/dev/null 2>&1 || exit 1
 
