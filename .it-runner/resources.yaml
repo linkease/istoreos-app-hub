@@ -1,0 +1,45 @@
+version: v1
+
+resources:
+  - id: vscode-janson-9-19
+    name: VSCode-Janson-9.19
+    kind: console
+    projectKey: manual-links
+    description: Janson 开发机上的 VSCode Web 入口。
+    aliases: [vscode 9.19, code-server 9.19]
+    tags: [manual, vscode, remote, dev, lan, 9.19, entry]
+    links:
+      - name: VSCode
+        url: https://192.168.9.3:5008/
+        access: lan
+        openable: true
+        description: 浏览器打开的 VSCode 远程入口
+
+  - id: janson-web-remote
+    name: Janson-Web-Remote
+    kind: console
+    projectKey: manual-links
+    description: Janson 机器上的 Web Remote 服务入口。
+    aliases: [web remote, janson remote]
+    tags: [manual, remote, web, dev, lan, 9.19, entry]
+    links:
+      - name: Web Remote
+        url: https://192.168.9.3:5001/
+        access: lan
+        openable: true
+        description: 局域网 Web Remote 入口
+
+  - id: carseason-9-3-kboard
+    name: Carseason-9.3-kboard
+    kind: console
+    projectKey: manual-links
+    description: 9.3 机器上的 kboard 入口。
+    aliases: [kboard, carseason, 9.3]
+    tags: [manual, kboard, board, dev, lan, 9.3, entry]
+    links:
+      - name: kboard
+        url: http://192.168.9.3:5003/
+        access: lan
+        openable: true
+        description: 局域网 kboard 页面
+
