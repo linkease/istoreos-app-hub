@@ -42,6 +42,7 @@ Auto-generated from `apps/*/app-meta-*/Makefile` via `make apps-catalog`.
 | netdata | NetData系统监控 | monitor system | /cgi-bin/luci/admin/status/netdata | https://www.netdata.cloud/ | 一眼掌握机器运行状态/系统效能关键指标 |
 | nextcloud | nextcloud | nas service | /cgi-bin/luci/admin/services/nextcloud | https://nextcloud.com/ | 数据的安全之家。根据您的设置，从任何设备访问和共享您的文件、日历、联系人、邮件等 |
 | oneapi | OneAPI | ai net | /cgi-bin/luci/admin/services/oneapi | https://openai.justsong.cn | OneAPI 是LLM API 管理 & 分发系统，支持 OpenAI、Azure、Anthropic Claude、Google Gemini、DeepSeek。 |
+| openclawmgr | OpenClaw Launcher | ai | /cgi-bin/luci/admin/services/openclawmgr | https://github.com/openclaw/openclaw | 在 OpenWrt 上原生安装、启动并管理官方 OpenClaw。 |
 | openwebui | OpenWebUI | ai net | /cgi-bin/luci/admin/services/openwebui | https://openwebui.com/ | Open WebUI 是一款可扩展、自托管的 AI 界面，能够无缝适配您的工作流程，且所有操作均可完全离线运行。 |
 | owntone | Owntone音乐平台 | multimedia net | /cgi-bin/luci/admin/services/owntone | https://owntone.github.io/owntone-server/ | Owntone是一个支持iTunes, AirPlay, Chromecast等的音乐串流平台。 |
 | penpot | Penpot设计平台 | net tool | /cgi-bin/luci/admin/services/penpot | https://penpot.app/ | Penpot是第一个开源的便于团队协作的在线设计平台。 |

@@ -636,6 +636,22 @@
     "meta_dir": "apps/oneapi/app-meta-oneapi"
   },
   {
+    "id": "openclawmgr",
+    "title": "OpenClaw Launcher",
+    "description": "在 OpenWrt 上原生安装、启动并管理官方 OpenClaw。",
+    "description_en": "OpenClaw Launcher for native deployment and management (procd + Node/npm).",
+    "tags": [
+      "ai"
+    ],
+    "website": "https://github.com/openclaw/openclaw",
+    "author": "xiaobao",
+    "version": "0.1.8",
+    "release": "1",
+    "depends": "+luci-app-openclawmgr +luci-i18n-openclawmgr-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/openclawmgr",
+    "meta_dir": "apps/openclawmgr/app-meta-openclawmgr"
+  },
+  {
     "id": "openwebui",
     "title": "OpenWebUI",
     "description": "Open WebUI 是一款可扩展、自托管的 AI 界面，能够无缝适配您的工作流程，且所有操作均可完全离线运行。",
