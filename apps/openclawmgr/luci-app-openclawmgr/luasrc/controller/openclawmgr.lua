@@ -672,7 +672,7 @@ function action_config_data()
 		local cfg = read_json_file(base_dir .. "/data/.openclaw/openclaw.json") or {}
 		local primary = cfg.agents and cfg.agents.defaults and cfg.agents.defaults.model and cfg.agents.defaults.model.primary
 		if type(primary) == "string" and primary:match("^custom%-provider/.+") then
-			return primary
+			return primary:gsub("^[^/]+/", "")
 		end
 		local providers = cfg.models and cfg.models.providers
 		local custom = providers and providers["custom-provider"]
@@ -680,9 +680,17 @@ function action_config_data()
 		local first = type(models) == "table" and models[1] or nil
 		local id = first and first.id
 		if type(id) == "string" and id ~= "" then
-			return "custom-provider/" .. id
+			return id
 		end
 		return ""
+	end
+
+	local function display_model_name(value)
+		value = tostring(value or "")
+		if value == "" then
+			return ""
+		end
+		return value:gsub("^[^/]+/", "")
 	end
 
 	if (http.getenv("REQUEST_METHOD") or "GET") == "POST" then
@@ -749,7 +757,7 @@ function action_config_data()
 		end
 
 		if has("default_model") then
-			uci:set("openclawmgr", section, "default_model", tostring(body.default_model or ""))
+			uci:set("openclawmgr", section, "default_model", display_model_name(body.default_model or ""))
 		end
 
 		if has("install_accelerated") then
@@ -836,7 +844,7 @@ function action_config_data()
 	end
 
 	local current_default_agent = uci:get("openclawmgr", "main", "default_agent") or "anthropic"
-	local current_default_model = uci:get("openclawmgr", "main", "default_model") or ""
+	local current_default_model = display_model_name(uci:get("openclawmgr", "main", "default_model") or "")
 	if current_default_agent == "custom-provider" and current_default_model == "" then
 		current_default_model = infer_custom_provider_model(base_dir)
 	end

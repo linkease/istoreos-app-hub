@@ -1,5 +1,17 @@
 #!/bin/sh
 
+default_base_dir() {
+	local main_dir conf_dir
+
+	main_dir="$(uci -q get quickstart.main.main_dir 2>/dev/null || true)"
+	conf_dir="$(uci -q get quickstart.main.conf_dir 2>/dev/null || true)"
+
+	[ -n "$main_dir" ] || main_dir="/root"
+	[ -n "$conf_dir" ] || conf_dir="${main_dir%/}/Configs"
+
+	printf '%s/OpenClawMgr\n' "${conf_dir%/}"
+}
+
 # Ensure section exists
 if ! uci -q get openclawmgr.main >/dev/null 2>&1; then
 	uci -q set openclawmgr.main=openclawmgr >/dev/null 2>&1 || true
@@ -7,6 +19,7 @@ fi
 
 # Fill defaults (only if missing)
 [ -n "$(uci -q get openclawmgr.main.enabled 2>/dev/null)" ] || uci -q set openclawmgr.main.enabled='0'
+[ -n "$(uci -q get openclawmgr.main.base_dir 2>/dev/null)" ] || uci -q set openclawmgr.main.base_dir="$(default_base_dir)"
 [ -n "$(uci -q get openclawmgr.main.port 2>/dev/null)" ] || uci -q set openclawmgr.main.port='18789'
 [ -n "$(uci -q get openclawmgr.main.bind 2>/dev/null)" ] || uci -q set openclawmgr.main.bind='lan'
 [ -n "$(uci -q get openclawmgr.main.install_accelerated 2>/dev/null)" ] || uci -q set openclawmgr.main.install_accelerated='1'

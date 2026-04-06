@@ -685,21 +685,24 @@ local gateway = ensure_table(cfg, "gateway")
 gateway.mode = "local"
 gateway.port = tonumber(os.getenv("GATEWAY_PORT")) or 18789
 gateway.bind = os.getenv("GATEWAY_BIND") or "lan"
-gateway.auth = { mode = "token", token = os.getenv("GATEWAY_TOKEN") or "" }
+local auth = ensure_table(gateway, "auth")
+auth.mode = "token"
+auth.token = os.getenv("GATEWAY_TOKEN") or ""
 
 local control = ensure_table(gateway, "controlUi")
 control.enabled = true
-control.basePath = nil
 control.allowedOrigins = split_lines(os.getenv("ALLOWED_ORIGINS_RAW"))
 control.allowInsecureAuth = bool_env("GATEWAY_ALLOW_INSECURE")
 control.dangerouslyDisableDeviceAuth = bool_env("GATEWAY_DISABLE_DEVICE_AUTH")
 control.dangerouslyAllowHostHeaderOriginFallback = bool_env("GATEWAY_HOST_HEADER_FALLBACK")
 
-local env = {}
+local env = ensure_table(cfg, "env")
 local selected_env_key = os.getenv("DEFAULT_AGENT_KEY")
 local selected_api_key = os.getenv("DEFAULT_AGENT_API_KEY") or ""
 if selected_env_key and selected_env_key ~= "" and selected_api_key ~= "" then
 	env[selected_env_key] = selected_api_key
+elseif selected_env_key and selected_env_key ~= "" then
+	env[selected_env_key] = nil
 end
 cfg.env = next(env) and env or nil
 
@@ -707,65 +710,56 @@ cfg.env = next(env) and env or nil
 	if type(models.mode) ~= "string" or models.mode == "" then
 		models.mode = "merge"
 	end
-	local providers = ensure_table(models, "providers")
 
 	local current_provider_id = os.getenv("DEFAULT_AGENT_NAME") or "anthropic"
+	local primary_model = os.getenv("DEFAULT_AGENT_MODEL") or "anthropic/claude-sonnet-4-6"
+	local current_model_id = primary_model:match("^[^/]+/(.+)$") or primary_model
+	if current_model_id == "" then
+		current_model_id = "claude-sonnet-4-6"
+	end
+
+	local providers = ensure_table(models, "providers")
 	local current_provider = ensure_table(providers, current_provider_id)
 
 if current_provider_id == "openai" then
 	current_provider.api = "openai-completions"
 	current_provider.baseUrl = "https://api.openai.com/v1"
-	current_provider.apiKey = selected_api_key
+	current_provider.apiKey = selected_api_key ~= "" and selected_api_key or nil
 	current_provider.models = {
-		{ id = "gpt-5.2", name = "GPT-5.2" },
+		{ id = current_model_id, name = current_model_id },
 	}
 elseif current_provider_id == "anthropic" then
 	current_provider.api = "anthropic-messages"
 	current_provider.baseUrl = "https://api.anthropic.com"
-	current_provider.apiKey = selected_api_key
+	current_provider.apiKey = selected_api_key ~= "" and selected_api_key or nil
 	current_provider.models = {
-		{ id = "claude-sonnet-4-6", name = "Claude Sonnet 4.6" },
+		{ id = current_model_id, name = current_model_id },
 	}
 elseif current_provider_id == "minimax-cn" then
 	current_provider.api = "anthropic-messages"
 	current_provider.baseUrl = "https://api.minimaxi.com/anthropic"
-	current_provider.apiKey = selected_api_key
+	current_provider.apiKey = selected_api_key ~= "" and selected_api_key or nil
 	current_provider.authHeader = true
 	current_provider.models = {
-		{ id = "MiniMax-M2.5", name = "MiniMax M2.5" },
+		{ id = current_model_id, name = current_model_id },
 	}
 elseif current_provider_id == "moonshot" then
 	current_provider.api = "openai-completions"
 	current_provider.baseUrl = "https://api.moonshot.cn/v1"
-	current_provider.apiKey = selected_api_key
+	current_provider.apiKey = selected_api_key ~= "" and selected_api_key or nil
 	current_provider.models = {
-		{ id = "kimi-k2.5", name = "Kimi K2.5" },
+		{ id = current_model_id, name = current_model_id },
 	}
 elseif current_provider_id == "custom-provider" then
-	local primary_model = os.getenv("DEFAULT_AGENT_MODEL") or "custom-provider/custom-model"
-	local custom_model_id = primary_model:match("^[^/]+/(.+)$") or primary_model
-	if custom_model_id == "" then
-		custom_model_id = "custom-model"
+	if current_model_id == "" then
+		current_model_id = "custom-model"
 	end
 	current_provider.api = "openai-completions"
 	current_provider.baseUrl = os.getenv("DEFAULT_AGENT_OVERRIDE_BASE_URL") or current_provider.baseUrl
-	current_provider.apiKey = selected_api_key
+	current_provider.apiKey = selected_api_key ~= "" and selected_api_key or nil
 	current_provider.authHeader = nil
 	current_provider.models = {
-		{
-			reasoning = false,
-			name = custom_model_id .. " (Custom Provider)",
-			cost = {
-				input = 0,
-				cacheRead = 0,
-				cacheWrite = 0,
-				output = 0,
-			},
-			id = custom_model_id,
-			maxTokens = 4096,
-			contextWindow = 16000,
-			input = { "text" },
-		},
+		{ id = current_model_id, name = current_model_id },
 	}
 end
 
@@ -779,29 +773,10 @@ end
 		current_provider.baseUrl = os.getenv("DEFAULT_AGENT_BASE_URL") or current_provider.baseUrl
 	end
 
-	-- luci.jsonc encodes empty Lua tables as JSON arrays ([]). To avoid producing
-	-- invalid provider entries like {"deepseek/deepseek-chat":[]}, drop provider
-	-- records that are empty or look like a provider/model string.
-	do
-		local to_del = {}
-		for k, v in pairs(providers) do
-			if type(k) == "string" and k:find("/", 1, true) then
-				table.insert(to_del, k)
-			elseif type(v) == "table" and next(v) == nil then
-				table.insert(to_del, k)
-			end
-		end
-		for _, k in ipairs(to_del) do
-			providers[k] = nil
-		end
-	end
-
 local agents = ensure_table(cfg, "agents")
 local defaults = ensure_table(agents, "defaults")
 local model = ensure_table(defaults, "model")
 model.primary = os.getenv("DEFAULT_AGENT_MODEL") or "anthropic/claude-sonnet-4-6"
-
-prune_empty_tables(cfg)
 
 local encoded = json.stringify(cfg, true)
 if encoded then
