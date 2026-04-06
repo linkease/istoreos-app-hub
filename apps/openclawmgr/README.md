@@ -33,3 +33,8 @@
 ## 依赖
 
 - `luci-lib-taskd`（含 `luci-lib-xterm` 与 `taskd`）
+
+## 配置来源
+
+- `UCI` 仅保留 `enabled`、`base_dir`、`install_accelerated` 这类外层管理配置。
+- OpenClaw 运行配置统一以 `${base_dir}/data/.openclaw/openclaw.json` 为准，包括 `port`、`bind`、`token` 以及模型/鉴权相关设置；LuCI、安装脚本与 init 脚本均优先读取该文件。

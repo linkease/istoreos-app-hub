@@ -25,17 +25,6 @@ if [ -z "$base_dir" ]; then
 fi
 mkdir -p "$base_dir" >/dev/null 2>&1 || exit 1
 
-port="$(uci -q get openclawmgr.main.port 2>/dev/null || true)"
-case "$port" in
-	''|*[!0-9]*) uci -q set openclawmgr.main.port="18789" >/dev/null 2>&1 || exit 1 ;;
-esac
-
-bind="$(uci -q get openclawmgr.main.bind 2>/dev/null || true)"
-case "$bind" in
-	loopback|lan|auto|tailnet|custom) ;;
-	*) uci -q set openclawmgr.main.bind="lan" >/dev/null 2>&1 || exit 1 ;;
-esac
-
 uci -q batch <<-EOF >/dev/null || exit 1
 	set openclawmgr.main.base_dir="$base_dir"
 	set openclawmgr.main.enabled="$ENABLED"
