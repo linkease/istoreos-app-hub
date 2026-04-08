@@ -81,6 +81,10 @@ openclaw_cmd() {
 	return 127
 }
 
+openclaw() {
+	openclaw_cmd "$@"
+}
+
 action_backup_config() {
 	mkdir -p "$BACKUP_DIR" 2>/dev/null || true
 	if [ ! -f "$CONFIG_FILE" ]; then
@@ -117,13 +121,48 @@ action_configure() {
 	openclaw_cmd configure || true
 }
 
+action_custom_command() {
+	printf '\n'
+	info "=== 自定义命令 ==="
+	printf '%s\n' "${DIM}当前环境已注入 BASE_DIR / NODE_DIR / GLOBAL_DIR / DATA_DIR / OPENCLAW_* / PATH${NC}"
+	printf '%s\n' "${DIM}提示：可直接输入 openclaw doctor / openclaw configure / node -v 等命令${NC}"
+	local cmd=""
+	cmd="$(prompt_default "请输入要执行的命令" "")"
+	[ -n "$cmd" ] || return 0
+	printf '\n'
+	info "执行命令: ${cmd}"
+	eval "$cmd" || true
+}
+
+action_configure_entry() {
+	while true; do
+		printf '\n'
+		printf '%s\n' "${BOLD}OpenClaw CLI 命令入口${NC}"
+		printf '%s\n' "${DIM}base_dir: ${BASE_DIR}${NC}"
+		printf '\n'
+		printf '%s\n' "  ${CYAN}1)${NC} 执行 openclaw configure"
+		printf '%s\n' "  ${CYAN}2)${NC} 输入自定义命令"
+		printf '%s\n' "  ${CYAN}0)${NC} 返回"
+		printf '\n'
+
+		local c=""
+		c="$(prompt_default "请选择" "1")"
+		case "$c" in
+			1) action_configure; pause_enter ;;
+			2) action_custom_command; pause_enter ;;
+			0) return 0 ;;
+			*) warn "无效选择" ;;
+		esac
+	done
+}
+
 main_menu() {
 	while true; do
 		printf '\n'
 		printf '%s\n' "${BOLD}OpenClaw AI Gateway — CLI 配置入口（OpenClawMgr）${NC}"
 		printf '%s\n' "${DIM}base_dir: ${BASE_DIR}${NC}"
 		printf '\n'
-		printf '%s\n' "  ${CYAN}1)${NC} 🧭 官方配置向导  ${DIM}(openclaw configure)${NC}"
+		printf '%s\n' "  ${CYAN}1)${NC} 🧭 CLI 命令入口  ${DIM}(configure / 自定义命令)${NC}"
 		printf '%s\n' "  ${CYAN}2)${NC} 💾 备份配置"
 		printf '%s\n' "  ${CYAN}3)${NC} 📥 恢复配置"
 		printf '\n'
@@ -133,7 +172,7 @@ main_menu() {
 		local c=""
 		c="$(prompt_default "请选择" "1")"
 		case "$c" in
-			1) action_configure; pause_enter ;;
+			1) action_configure_entry ;;
 			2) action_backup_config || true; pause_enter ;;
 			3) action_restore_config || true; pause_enter ;;
 			0) ok "再见！"; exit 0 ;;
@@ -151,7 +190,7 @@ case "${1:-}" in
 	*)
 		case "${1:-menu}" in
 			menu) main_menu ;;
-			configure) action_configure; pause_enter ;;
+			configure) action_configure_entry ;;
 			backup) action_backup_config || true; pause_enter ;;
 			restore) action_restore_config || true; pause_enter ;;
 			*) echo "Unknown command: ${1:-}" >&2; exit 2 ;;

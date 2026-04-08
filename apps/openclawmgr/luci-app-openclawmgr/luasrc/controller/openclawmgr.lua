@@ -19,6 +19,10 @@ function index()
 	entry({"admin", "services", "openclawmgr", "check_update"}, call("action_check_update")).leaf = true
 	entry({"admin", "services", "openclawmgr", "config_data"}, call("action_config_data")).leaf = true
 	entry({"admin", "services", "openclawmgr", "apply_config"}, call("action_apply_config")).leaf = true
+	entry({"admin", "services", "openclawmgr", "security_data"}, call("action_security_data")).leaf = true
+	entry({"admin", "services", "openclawmgr", "security_add"}, call("action_security_add")).leaf = true
+	entry({"admin", "services", "openclawmgr", "security_remove"}, call("action_security_remove")).leaf = true
+	entry({"admin", "services", "openclawmgr", "security_recheck"}, call("action_security_recheck")).leaf = true
 
 	entry({"admin", "services", "openclawmgr", "logs_api"}, call("action_logs")).leaf = true
 
@@ -316,6 +320,213 @@ local function get_host()
 		host = http.getenv("SERVER_ADDR") or "localhost"
 	end
 	return host
+end
+
+local function security_config_path(base_dir)
+	base_dir = trim(base_dir)
+	if base_dir == "" then
+		return ""
+	end
+	return base_dir .. "/data/.openclawmgr/openclawmgr-security.json"
+end
+
+local function load_security_config(base_dir)
+	local data = read_json_file(security_config_path(base_dir))
+	if type(data) ~= "table" or type(data.items) ~= "table" then
+		return { items = {} }
+	end
+	return data
+end
+
+local function save_security_config(base_dir, data)
+	local jsonc = require "luci.jsonc"
+	local sys = require "luci.sys"
+	local util = require "luci.util"
+	local path = security_config_path(base_dir)
+	local dir = base_dir .. "/data/.openclawmgr"
+	local tmp = path .. ".tmp"
+	local f
+
+	if trim(path) == "" then
+		return false
+	end
+	sys.call("mkdir -p " .. util.shellquote(dir) .. " >/dev/null 2>&1")
+	f = io.open(tmp, "w")
+	if not f then
+		return false
+	end
+	f:write(jsonc.stringify(data) or "{\"items\":[]}")
+	f:close()
+	if not os.rename(tmp, path) then
+		os.remove(tmp)
+		return false
+	end
+	return true
+end
+
+local function security_stat(path)
+	local sys = require "luci.sys"
+	local util = require "luci.util"
+	local raw = sys.exec("stat -c '%u:%g:%a' " .. util.shellquote(path) .. " 2>/dev/null"):gsub("%s+$", "")
+	local uid, gid, mode = raw:match("^(%d+):(%d+):(%d+)$")
+	if not uid then
+		return nil
+	end
+	return {
+		uid = tonumber(uid),
+		gid = tonumber(gid),
+		mode = mode,
+	}
+end
+
+local function security_path_exists(path)
+	local sys = require "luci.sys"
+	local util = require "luci.util"
+	return sys.call("[ -e " .. util.shellquote(path) .. " ] >/dev/null 2>&1") == 0
+end
+
+local function security_path_is_dir(path)
+	local sys = require "luci.sys"
+	local util = require "luci.util"
+	return sys.call("[ -d " .. util.shellquote(path) .. " ] >/dev/null 2>&1") == 0
+end
+
+local function security_probe(path)
+	local sys = require "luci.sys"
+	local util = require "luci.util"
+	local raw = sys.exec("stat -Lc '%F|%u|%g|%a' " .. util.shellquote(path) .. " 2>/dev/null"):gsub("%s+$", "")
+	local kind, uid, gid, mode = raw:match("^(.-)|(%d+)|(%d+)|(%d+)$")
+	if kind then
+		return {
+			kind = kind,
+			uid = tonumber(uid),
+			gid = tonumber(gid),
+			mode = mode,
+		}
+	end
+	if security_path_is_dir(path) then
+		return { kind = "directory" }
+	end
+	if security_path_exists(path) then
+		return { kind = "other" }
+	end
+	return nil
+end
+
+local function security_apply(path)
+	local sys = require "luci.sys"
+	local util = require "luci.util"
+	local quoted = util.shellquote(path)
+	if sys.call("chown root:root " .. quoted .. " >/dev/null 2>&1") ~= 0 then
+		return false, "chown failed"
+	end
+	if sys.call("chmod 0750 " .. quoted .. " >/dev/null 2>&1") ~= 0 then
+		return false, "chmod failed"
+	end
+	return true
+end
+
+local function security_restore(path, uid, gid, mode)
+	local sys = require "luci.sys"
+	local util = require "luci.util"
+	local quoted = util.shellquote(path)
+	if sys.call("chown " .. tostring(uid) .. ":" .. tostring(gid) .. " " .. quoted .. " >/dev/null 2>&1") ~= 0 then
+		return false, "restore chown failed"
+	end
+	if sys.call("chmod " .. tostring(mode) .. " " .. quoted .. " >/dev/null 2>&1") ~= 0 then
+		return false, "restore chmod failed"
+	end
+	return true
+end
+
+local function security_protection_mode()
+	return "仅允许 root 和 root 组访问"
+end
+
+local function security_check_item(item)
+	if security_path_is_dir(item.path) then
+		local st = security_stat(item.path)
+		if not st then
+			return {
+				id = tostring(item.id or ""),
+				path = tostring(item.path or ""),
+				protectionMode = security_protection_mode(),
+				status = "check-failed",
+				checkResult = "检测失败",
+			}
+		end
+		if st.uid == 0 and st.gid == 0 and (st.mode == "750" or st.mode == "0750") then
+			return {
+				id = tostring(item.id or ""),
+				path = tostring(item.path or ""),
+				protectionMode = security_protection_mode(),
+				status = "active",
+				checkResult = "openclawmgr 无法进入该目录",
+			}
+		end
+		return {
+			id = tostring(item.id or ""),
+			path = tostring(item.path or ""),
+			protectionMode = security_protection_mode(),
+			status = "inactive",
+			checkResult = "目录权限与预期不一致",
+		}
+	end
+	if not security_path_exists(item.path) then
+		return {
+			id = tostring(item.id or ""),
+			path = tostring(item.path or ""),
+			protectionMode = security_protection_mode(),
+			status = "not-found",
+			checkResult = "目录不存在",
+		}
+	end
+	return {
+		id = tostring(item.id or ""),
+		path = tostring(item.path or ""),
+		protectionMode = security_protection_mode(),
+		status = "check-failed",
+		checkResult = "目标不是目录",
+	}
+end
+
+local function validate_security_path(path, base_dir, items)
+	path = trim(path)
+	base_dir = trim(base_dir)
+	if path == "" then
+		return false, "请输入目录路径"
+	end
+	if not path:match("^/") then
+		return false, "请输入绝对路径"
+	end
+	if path == "/" then
+		return false, "不能添加根目录 /"
+	end
+	for _, item in ipairs(items or {}) do
+		if tostring(item.path or "") == path then
+			return false, "该目录已在列表中"
+		end
+	end
+	if base_dir ~= "" then
+		local esc_base = base_dir:gsub("([^%w])", "%%%1")
+		local esc_path = path:gsub("([^%w])", "%%%1")
+		if path == base_dir or path:match("^" .. esc_base .. "/") then
+			return false, "不能添加 OpenClaw 的运行目录"
+		end
+		if base_dir:match("^" .. esc_path .. "/") then
+			return false, "不能添加 OpenClaw 运行目录的父目录"
+		end
+	end
+	return true
+end
+
+local function find_security_item(items, id)
+	for index, item in ipairs(items or {}) do
+		if tostring(item.id or "") == tostring(id or "") then
+			return item, index
+		end
+	end
+	return nil, nil
 end
 
 function action_logs()
@@ -1168,6 +1379,138 @@ function action_config_data()
 			default_origin = default_allowed_origin(runtime_cfg.port),
 		}
 	})
+end
+
+function action_security_data()
+	local uci = require "luci.model.uci".cursor()
+	local base_dir = trim(uci:get("openclawmgr", "main", "base_dir") or "")
+	local data, items = nil, {}
+	if base_dir == "" then
+		write_json({ ok = true, items = items })
+		return
+	end
+	data = load_security_config(base_dir)
+	for _, item in ipairs(data.items or {}) do
+		items[#items + 1] = security_check_item(item)
+	end
+	write_json({ ok = true, items = items })
+end
+
+function action_security_add()
+	local uci = require "luci.model.uci".cursor()
+	if not require_csrf() then
+		return
+	end
+	local base_dir = trim(uci:get("openclawmgr", "main", "base_dir") or "")
+	local body = read_json_body() or {}
+	local path = trim(body.path or "")
+	local data, ok, err, item, st, probe = nil, nil, nil, nil, nil, nil
+	if base_dir == "" then
+		write_json({ ok = false, error = "base_dir required" })
+		return
+	end
+	data = load_security_config(base_dir)
+	ok, err = validate_security_path(path, base_dir, data.items)
+	if not ok then
+		write_json({ ok = false, error = err })
+		return
+	end
+	item = {
+		id = "dir_" .. tostring(os.time()) .. tostring(math.random(1000, 9999)),
+		path = path,
+		orig_uid = 0,
+		orig_gid = 0,
+		orig_mode = "755",
+	}
+	probe = security_probe(path)
+	if not probe then
+		write_json({ ok = false, error = "目录不存在" })
+		return
+	end
+	if probe.kind ~= "directory" then
+		write_json({ ok = false, error = "目标不是目录" })
+		return
+	end
+	st = security_stat(path)
+	if not st then
+		write_json({ ok = false, error = "读取目录权限失败" })
+		return
+	end
+	item.orig_uid = st.uid
+	item.orig_gid = st.gid
+	item.orig_mode = st.mode
+	ok, err = security_apply(path)
+	if not ok then
+		write_json({ ok = false, error = err or "apply failed" })
+		return
+	end
+	data.items[#data.items + 1] = item
+	if not save_security_config(base_dir, data) then
+		write_json({ ok = false, error = "save security config failed" })
+		return
+	end
+	write_json({ ok = true, item = security_check_item(item) })
+end
+
+function action_security_remove()
+	local uci = require "luci.model.uci".cursor()
+	if not require_csrf() then
+		return
+	end
+	local base_dir = trim(uci:get("openclawmgr", "main", "base_dir") or "")
+	local body = read_json_body() or {}
+	local id = tostring(body.id or "")
+	local mode = tostring(body.mode or "direct")
+	local data, item, index = nil, nil, nil
+	if base_dir == "" then
+		write_json({ ok = false, error = "base_dir required" })
+		return
+	end
+	if mode ~= "direct" and mode ~= "restore" then
+		write_json({ ok = false, error = "invalid mode" })
+		return
+	end
+	data = load_security_config(base_dir)
+	item, index = find_security_item(data.items, id)
+	if not item then
+		write_json({ ok = false, error = "item not found" })
+		return
+	end
+	if mode == "restore" and security_path_exists(item.path) then
+		local ok, err = security_restore(item.path, item.orig_uid, item.orig_gid, item.orig_mode)
+		if not ok then
+			write_json({ ok = false, error = err or "restore failed" })
+			return
+		end
+	end
+	table.remove(data.items, index)
+	if not save_security_config(base_dir, data) then
+		write_json({ ok = false, error = "save security config failed" })
+		return
+	end
+	write_json({ ok = true })
+end
+
+function action_security_recheck()
+	local uci = require "luci.model.uci".cursor()
+	if not require_csrf() then
+		return
+	end
+	local base_dir = trim(uci:get("openclawmgr", "main", "base_dir") or "")
+	local body = read_json_body() or {}
+	local id = tostring(body.id or "")
+	local data, item = nil, nil
+	if base_dir == "" then
+		write_json({ ok = false, error = "base_dir required" })
+		return
+	end
+	data = load_security_config(base_dir)
+	item = find_security_item(data.items, id)
+	if not item then
+		write_json({ ok = false, error = "item not found" })
+		return
+	end
+	write_json({ ok = true, item = security_check_item(item) })
 end
 
 function action_op()

@@ -32,7 +32,7 @@ local data_dir = base_dir .. "/data"
 s = m:section(SimpleSection)
 
 o = s:option(Value, "mode", translate("Mode"))
-o:value("configure", translate("官方配置向导 (openclaw configure)"))
+o:value("configure", translate("CLI 命令入口 (configure / 自定义命令)"))
 o:value("backup", translate("备份配置"))
 o:value("restore", translate("恢复配置"))
 o.default = "configure"
