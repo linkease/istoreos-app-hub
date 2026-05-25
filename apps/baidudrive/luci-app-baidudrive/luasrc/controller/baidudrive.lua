@@ -15,8 +15,7 @@ end
 function baidudrive_status()
 	local sys = require "luci.sys"
 	local uci = require "luci.model.uci".cursor()
-	local listen_addr = uci:get_first("baidudrive", "baidudrive", "listen_addr") or ":8080"
-	local port = listen_addr:match(":(%d+)$") or "8080"
+	local port = uci:get_first("baidudrive", "baidudrive", "port") or "8080"
 	local status = {
 		running = (sys.call("pidof baidudrive >/dev/null") == 0),
 		port = port

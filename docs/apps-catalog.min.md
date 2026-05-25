@@ -7,7 +7,7 @@ Format: `id — title — description`
 - airconnect — AirConnect — 让 UPnP/Sonos 和 Chromecast 设备支持 AirPlay 音频串流
 - ap-modem — 访问AP/光猫 — 让局域网客户端访问不同子网的AP或光猫（只支持 OpenWRT 21 以上）
 - arcadia — Arcadia一站式代码运维平台 — 脚本语言编程与运维，支持定时任务调度。
-- baidudrive — 百度网盘 — 百度网盘 Web 管理工具，默认端口 8080。
+- baidudrive — 百度网盘 — 百度网盘 Web 管理工具
 - chinesesubfinder — ChineseSubFinder中文字幕 — ChineseSubFinder是一个中文字幕平台。
 - clouddrive2 — CloudDrive2 — CloudDrive 是一个强大的多云盘管理工具，为用户提供包含云盘本地挂载的一站式的多云盘解决方案。
 - codeserver — CodeServer — 一个在线版本的VSCode，可以在线开发。

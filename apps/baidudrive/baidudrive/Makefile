@@ -10,11 +10,11 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_baidudrive:=$(ARCH)
 
 PKG_NAME:=baidudrive
-PKG_VERSION:=0.1.0
+PKG_VERSION:=0.3.0
 PKG_RELEASE:=0
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/linkease/istore-packages/releases/download/prebuilt/
-PKG_HASH:=8e13b5099088ab05ad96744be5da823117a105414d0a540d6ee22ae747067f64
+PKG_HASH:=a95e475656baf292a4cc5fbc184f603ecf924abc53b2b9a1d2cbfc82d8d6ba95
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 PKG_BUILD_PARALLEL:=1

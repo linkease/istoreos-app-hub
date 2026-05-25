@@ -23,9 +23,10 @@ for _, val in pairs(paths) do
 end
 data_dir.default = default_path
 
-local listen_addr = s:option(Value, "listen_addr", translate("Listen address"))
-listen_addr.default = ":8080"
-listen_addr.rmempty = false
-listen_addr.description = translate("Address for BaiduDrive HTTP server, for example :8080 or 0.0.0.0:8080.")
+local port = s:option(Value, "port", translate("Listen port"))
+port.default = "8080"
+port.rmempty = false
+port.datatype = "port"
+port.description = translate("Port for BaiduDrive HTTP server.")
 
 return m

@@ -8,10 +8,8 @@ status(){
 	json_add_string "app" "baidudrive"
 	json_add_boolean "docker" "0"
 
-	local listen_addr port
-	listen_addr="$(uci get baidudrive.@baidudrive[0].listen_addr 2>/dev/null)"
-	[ -n "$listen_addr" ] || listen_addr=":8080"
-	port="${listen_addr##*:}"
+	local port
+	port="$(uci get baidudrive.@baidudrive[0].port 2>/dev/null)"
 	[ -n "$port" ] || port="8080"
 
 	if pidof baidudrive >/dev/null 2>&1; then
