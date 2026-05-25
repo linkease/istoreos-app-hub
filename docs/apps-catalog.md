@@ -7,6 +7,7 @@ Auto-generated from `apps/*/app-meta-*/Makefile` via `make apps-catalog`.
 | airconnect | AirConnect | multimedia net | /cgi-bin/luci/admin/services/airconnect | https://github.com/philippe44/AirConnect | 让 UPnP/Sonos 和 Chromecast 设备支持 AirPlay 音频串流 |
 | ap-modem | 访问AP/光猫 | net tool | /cgi-bin/luci/admin/network/ap_modem | https://github.com/linkease/openwrt-app-actions/tree/main/applications/luci-app-ap-modem | 让局域网客户端访问不同子网的AP或光猫（只支持 OpenWRT 21 以上） |
 | arcadia | Arcadia一站式代码运维平台 | net tool | /cgi-bin/luci/admin/services/arcadia | https://arcadia.cool | 脚本语言编程与运维，支持定时任务调度。 |
+| baidudrive | 百度网盘 | network storage | /cgi-bin/luci/admin/services/baidudrive | https://pan.baidu.com | 百度网盘 Web 管理工具 |
 | chinesesubfinder | ChineseSubFinder中文字幕 | multimedia net | /cgi-bin/luci/admin/services/chinesesubfinder | https://github.com/allanpk716/ChineseSubFinder | ChineseSubFinder是一个中文字幕平台。 |
 | clouddrive2 | CloudDrive2 | service tool | /cgi-bin/luci/admin/services/clouddrive2 | https://www.clouddrive2.com/ | CloudDrive 是一个强大的多云盘管理工具，为用户提供包含云盘本地挂载的一站式的多云盘解决方案。 |
 | codeserver | CodeServer | net tool | /cgi-bin/luci/admin/services/codeserver | https://coder.com/ | 一个在线版本的VSCode，可以在线开发。 |
@@ -20,6 +21,7 @@ Auto-generated from `apps/*/app-meta-*/Makefile` via `make apps-catalog`.
 | floatip | 浮动网关 | net tool | /cgi-bin/luci/admin/services/floatip | https://github.com/linkease/nas-packages | 浮动网关可以让你在内网有两个相互备份的网关，出现问题会相互切换。 |
 | gogs | Gogs服务 | net tool | /cgi-bin/luci/admin/services/gogs | https://gogs.io/ | 一款极易搭建的自助Git服务。 |
 | heimdall | Heimdall | net service | /cgi-bin/luci/admin/services/heimdall | https://heimdall.site/ | Heimdall 应用程序仪表板是所有 Web 应用程序的仪表板。不过，它不需要仅限于应用程序，您可以添加任何您喜欢的链接 |
+| hermes | Hermes | messaging server tool | /cgi-bin/luci/admin/services/hermes | https://get-hermes.ai/ | 运行在您的服务器上的自我改进型人工智能代理。它采用跨会话累积的分层内存、在您离线时运行的定时任务调度程序，以及自动保存可重用程序的技能系统。 |
 | homeassistant | Home Assistant | net service | /cgi-bin/luci/admin/services/homeassistant | https://www.home-assistant.io/ | 开源智能家居系统，将本地控制和隐私放在首位。 |
 | htreader | HTReader在线读书 | net | /cgi-bin/luci/admin/services/htreader | https://github.com/hectorqin/reader | HTReader 是一个网页版本在线读书。 |
 | immich | immich相册 | ai multimedia | /cgi-bin/luci/admin/services/immich | https://www.immich.app | Immich 是一个自我托管的照片和视频管理解决方案。 |
@@ -42,6 +44,7 @@ Auto-generated from `apps/*/app-meta-*/Makefile` via `make apps-catalog`.
 | netdata | NetData系统监控 | monitor system | /cgi-bin/luci/admin/status/netdata | https://www.netdata.cloud/ | 一眼掌握机器运行状态/系统效能关键指标 |
 | nextcloud | nextcloud | nas service | /cgi-bin/luci/admin/services/nextcloud | https://nextcloud.com/ | 数据的安全之家。根据您的设置，从任何设备访问和共享您的文件、日历、联系人、邮件等 |
 | oneapi | OneAPI | ai net | /cgi-bin/luci/admin/services/oneapi | https://openai.justsong.cn | OneAPI 是LLM API 管理 & 分发系统，支持 OpenAI、Azure、Anthropic Claude、Google Gemini、DeepSeek。 |
+| openclawmgr | OpenClaw Launcher | ai | /cgi-bin/luci/admin/services/openclawmgr | https://github.com/openclaw/openclaw | 在 OpenWrt 上原生安装、启动并管理官方 OpenClaw。 |
 | openwebui | OpenWebUI | ai net | /cgi-bin/luci/admin/services/openwebui | https://openwebui.com/ | Open WebUI 是一款可扩展、自托管的 AI 界面，能够无缝适配您的工作流程，且所有操作均可完全离线运行。 |
 | owntone | Owntone音乐平台 | multimedia net | /cgi-bin/luci/admin/services/owntone | https://owntone.github.io/owntone-server/ | Owntone是一个支持iTunes, AirPlay, Chromecast等的音乐串流平台。 |
 | penpot | Penpot设计平台 | net tool | /cgi-bin/luci/admin/services/penpot | https://penpot.app/ | Penpot是第一个开源的便于团队协作的在线设计平台。 |

@@ -51,6 +51,23 @@
     "meta_dir": "apps/arcadia/app-meta-arcadia"
   },
   {
+    "id": "baidudrive",
+    "title": "百度网盘",
+    "description": "百度网盘 Web 管理工具",
+    "description_en": "Baidu Netdisk Web UI",
+    "tags": [
+      "network",
+      "storage"
+    ],
+    "website": "https://pan.baidu.com",
+    "author": "linkease",
+    "version": "1.0.0",
+    "release": "1",
+    "depends": "+luci-app-baidudrive +baidudrive",
+    "luci_entry": "/cgi-bin/luci/admin/services/baidudrive",
+    "meta_dir": "apps/baidudrive/app-meta-baidudrive"
+  },
+  {
     "id": "chinesesubfinder",
     "title": "ChineseSubFinder中文字幕",
     "description": "ChineseSubFinder是一个中文字幕平台。",
@@ -269,6 +286,24 @@
     "meta_dir": "apps/heimdall/app-meta-heimdall"
   },
   {
+    "id": "hermes",
+    "title": "Hermes",
+    "description": "运行在您的服务器上的自我改进型人工智能代理。它采用跨会话累积的分层内存、在您离线时运行的定时任务调度程序，以及自动保存可重用程序的技能系统。",
+    "description_en": "The self-improving AI agent that runs on your server. Layered memory that accumulates across sessions, a cron scheduler that fires while you're offline, and a skills system that saves reusable procedures automatically.",
+    "tags": [
+      "messaging",
+      "server",
+      "tool"
+    ],
+    "website": "https://get-hermes.ai/",
+    "author": "linkease/hermes",
+    "version": "1.0.0",
+    "release": "1",
+    "depends": "+luci-app-hermes +luci-i18n-hermes-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/hermes",
+    "meta_dir": "apps/hermes/app-meta-hermes"
+  },
+  {
     "id": "homeassistant",
     "title": "Home Assistant",
     "description": "开源智能家居系统，将本地控制和隐私放在首位。",
@@ -445,8 +480,8 @@
     ],
     "website": "https://www.koolcenter.com",
     "author": "koolcenter",
-    "version": "1.0.0",
-    "release": "3",
+    "version": "1.0.2",
+    "release": "1",
     "depends": "+luci-app-kai +kai +kai_session",
     "luci_entry": "/cgi-bin/luci/admin/services/kai",
     "meta_dir": "apps/kai/app-meta-kai"
@@ -634,6 +669,22 @@
     "depends": "+luci-app-oneapi +luci-i18n-oneapi-zh-cn +docker-deps",
     "luci_entry": "/cgi-bin/luci/admin/services/oneapi",
     "meta_dir": "apps/oneapi/app-meta-oneapi"
+  },
+  {
+    "id": "openclawmgr",
+    "title": "OpenClaw Launcher",
+    "description": "在 OpenWrt 上原生安装、启动并管理官方 OpenClaw。",
+    "description_en": "OpenClaw Launcher for native deployment and management (procd + Node/npm).",
+    "tags": [
+      "ai"
+    ],
+    "website": "https://github.com/openclaw/openclaw",
+    "author": "xiaobao",
+    "version": "0.1.12",
+    "release": "1",
+    "depends": "+luci-app-openclawmgr +luci-i18n-openclawmgr-zh-cn",
+    "luci_entry": "/cgi-bin/luci/admin/services/openclawmgr",
+    "meta_dir": "apps/openclawmgr/app-meta-openclawmgr"
   },
   {
     "id": "openwebui",
