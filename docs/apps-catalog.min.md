@@ -7,6 +7,7 @@ Format: `id — title — description`
 - airconnect — AirConnect — 让 UPnP/Sonos 和 Chromecast 设备支持 AirPlay 音频串流
 - ap-modem — 访问AP/光猫 — 让局域网客户端访问不同子网的AP或光猫（只支持 OpenWRT 21 以上）
 - arcadia — Arcadia一站式代码运维平台 — 脚本语言编程与运维，支持定时任务调度。
+- baidudrive — 百度网盘 — 百度网盘 Web 管理工具，默认端口 8080。
 - chinesesubfinder — ChineseSubFinder中文字幕 — ChineseSubFinder是一个中文字幕平台。
 - clouddrive2 — CloudDrive2 — CloudDrive 是一个强大的多云盘管理工具，为用户提供包含云盘本地挂载的一站式的多云盘解决方案。
 - codeserver — CodeServer — 一个在线版本的VSCode，可以在线开发。
@@ -20,6 +21,7 @@ Format: `id — title — description`
 - floatip — 浮动网关 — 浮动网关可以让你在内网有两个相互备份的网关，出现问题会相互切换。
 - gogs — Gogs服务 — 一款极易搭建的自助Git服务。
 - heimdall — Heimdall — Heimdall 应用程序仪表板是所有 Web 应用程序的仪表板。不过，它不需要仅限于应用程序，您可以添加任何您喜欢的链接
+- hermes — Hermes — 运行在您的服务器上的自我改进型人工智能代理。它采用跨会话累积的分层内存、在您离线时运行的定时任务调度程序，以及自动保存可重用程序的技能系统。
 - homeassistant — Home Assistant — 开源智能家居系统，将本地控制和隐私放在首位。
 - htreader — HTReader在线读书 — HTReader 是一个网页版本在线读书。
 - immich — immich相册 — Immich 是一个自我托管的照片和视频管理解决方案。
@@ -42,6 +44,7 @@ Format: `id — title — description`
 - netdata — NetData系统监控 — 一眼掌握机器运行状态/系统效能关键指标
 - nextcloud — nextcloud — 数据的安全之家。根据您的设置，从任何设备访问和共享您的文件、日历、联系人、邮件等
 - oneapi — OneAPI — OneAPI 是LLM API 管理 & 分发系统，支持 OpenAI、Azure、Anthropic Claude、Google Gemini、DeepSeek。
+- openclawmgr — OpenClaw Launcher — 在 OpenWrt 上原生安装、启动并管理官方 OpenClaw。
 - openwebui — OpenWebUI — Open WebUI 是一款可扩展、自托管的 AI 界面，能够无缝适配您的工作流程，且所有操作均可完全离线运行。
 - owntone — Owntone音乐平台 — Owntone是一个支持iTunes, AirPlay, Chromecast等的音乐串流平台。
 - penpot — Penpot设计平台 — Penpot是第一个开源的便于团队协作的在线设计平台。
