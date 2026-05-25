@@ -11,11 +11,11 @@ PKG_ARCH_baidudrive:=$(ARCH)
 
 PKG_NAME:=baidudrive
 PKG_VERSION:=0.3.0
-PKG_RELEASE:=0
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_RELEASE:=1
+PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/linkease/istore-packages/releases/download/prebuilt/
 PKG_HASH:=a95e475656baf292a4cc5fbc184f603ecf924abc53b2b9a1d2cbfc82d8d6ba95
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
