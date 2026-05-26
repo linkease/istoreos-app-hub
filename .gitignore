@@ -3,8 +3,6 @@ bin/
 .it-runner/logs/
 .it-runner/cache/
 .it-runner/states/
-.it-runner/envs/secrets.env
+.it-runner/envs/080-secret-local.env
 .it-runner/tasks/**/task.local.yaml
-.it-runner/.env.local
 tmp
-

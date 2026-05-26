@@ -5,8 +5,9 @@ This directory defines runnable tasks for the it-runner web UI.
 ## Files
 
 - `.it-runner/project.yaml`: Project entry (tasks/logs/cache dirs, env files)
-- `.it-runner/envs/shared.env`: Default non-secret env (committable)
-- `.it-runner/envs/secrets.env.example`: Example secrets file (committable)
+- `.it-runner/envs/000-defaults.env`: Default non-secret env (committable)
+- `.it-runner/envs/010-local.env`: Local overrides for this workspace
+- `.it-runner/env-templates/secrets.env.example`: Example secrets file (committable)
 - `.it-runner/tasks/`: Task definitions (directory layout)
 
 ## Environment variables
@@ -42,14 +43,14 @@ For this repo, tasks intentionally call `make <target>` to reuse the project’s
 
 ## Deploy workflow (recommended)
 
-- Set `.it-runner/.env.local` (ignored by git), for example:
+- Set `.it-runner/envs/010-local.env`, for example:
   - `APP=openclaw`
   - `DEPLOY_HOST=192.168.1.1` `DEPLOY_USER=root` `DEPLOY_PORT=22`
 - Run task `deploy-current-app` (or `deploy-current-app-dry` to preview payload).
 
 ## OpenClawMgr remote install (debug)
 
-- Ensure `.it-runner/.env.local` contains `DEPLOY_HOST/DEPLOY_USER/DEPLOY_PORT`
+- Ensure `.it-runner/envs/010-local.env` contains `DEPLOY_HOST/DEPLOY_USER/DEPLOY_PORT`
 - Run task `openclawmgr-install`
   - It runs `/usr/libexec/istorec/openclawmgr.sh install` on the remote box via SSH (prefer taskd if present)
   - Logs are saved under `.it-runner/logs/openclawmgr-install/`
