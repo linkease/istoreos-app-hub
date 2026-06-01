@@ -64,7 +64,7 @@ make syncapps-app APP=istorepanel
 
 用于把 `apps/<id>/` 下“依赖少、路径规律明显”的代码快速覆盖到目标测试路由器，方便调试（不负责部署/解压预编译二进制）。
 
-1) 在 `.it-runner/.env.local` 配置目标机（此文件被 `.gitignore` 忽略）：
+1) 在 `.it-runner/envs/010-local.env` 配置目标机（此文件被 `.gitignore` 忽略）：
 
 ```bash
 DEPLOY_HOST=192.168.1.1

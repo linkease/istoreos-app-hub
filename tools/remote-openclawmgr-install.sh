@@ -5,7 +5,7 @@ usage() {
   cat <<'EOF'
 Run OpenClawMgr installer on a remote box and save logs locally.
 
-Requires env (recommended via .it-runner/.env.local):
+Requires env (recommended via .it-runner/envs/010-local.env):
   DEPLOY_HOST, DEPLOY_USER, DEPLOY_PORT
 Optional:
   DEPLOY_SSH_KEY, DEPLOY_SSH_OPTS
@@ -55,7 +55,7 @@ main() {
   project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
   if [[ "$no_env" != "1" ]]; then
-    load_dotenv_if_present "${project_root}/.it-runner/.env.local"
+    load_dotenv_if_present "${project_root}/.it-runner/envs/010-local.env"
   fi
 
   local host="${DEPLOY_HOST:-}"
@@ -64,7 +64,7 @@ main() {
   local ssh_key="${DEPLOY_SSH_KEY:-}"
   local ssh_opts="${DEPLOY_SSH_OPTS:-}"
 
-  [[ -n "$host" ]] || die "DEPLOY_HOST is required (set in .it-runner/.env.local)"
+  [[ -n "$host" ]] || die "DEPLOY_HOST is required (set via .it-runner/envs/010-local.env or task env)"
 
   mkdir -p "${project_root}/.it-runner/logs/openclawmgr-install"
   mkdir -p "${project_root}/.it-runner/cache"
@@ -157,4 +157,3 @@ EOSH
 }
 
 main "$@"
-

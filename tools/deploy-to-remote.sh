@@ -16,7 +16,7 @@ What it deploys (best-effort):
   - Non-LuCI package root/ overlays -> /
   - Non-LuCI package files/ overlays (when files/ contains nested paths) -> /
 
-Env (recommended in .it-runner/.env.local):
+Env (recommended via task env / envsets, or in .it-runner/envs/010-local.env for local overrides):
   DEPLOY_HOST, DEPLOY_USER, DEPLOY_PORT
 Optional env:
   DEPLOY_SSH_KEY, DEPLOY_SSH_OPTS, DEPLOY_BACKUP=1|0, DEPLOY_RESTART=1|0
@@ -138,13 +138,11 @@ main() {
   project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
   if [[ "$no_env" != "1" ]]; then
-    load_dotenv_if_present "${project_root}/.it-runner/.env.local"
+    load_dotenv_if_present "${project_root}/.it-runner/envs/010-local.env"
   fi
 
-  if [[ -z "${app_id:-}" ]]; then
-    die "--app is required"
-  fi
-  [[ -n "$app_id" ]] || die "--app is required"
+  app_id="${app_id:-${APP:-${DEPLOY_SINGLE_APP:-}}}"
+  [[ -n "$app_id" ]] || die "--app is required (or set DEPLOY_SINGLE_APP via task env or local overrides)"
 
   local deploy_host="${DEPLOY_HOST:-}"
   local deploy_user="${DEPLOY_USER:-root}"
@@ -158,7 +156,7 @@ main() {
   local deploy_ssh_key="${DEPLOY_SSH_KEY:-}"
   local deploy_ssh_opts="${DEPLOY_SSH_OPTS:-}"
 
-  [[ -n "$deploy_host" ]] || die "DEPLOY_HOST is required (set in .it-runner/.env.local)"
+  [[ -n "$deploy_host" ]] || die "DEPLOY_HOST is required (set via task env/envsets or local overrides)"
 
   local ssh_args=(-p "$deploy_port")
   local scp_args=(-P "$deploy_port")

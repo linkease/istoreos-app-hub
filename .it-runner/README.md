@@ -7,7 +7,7 @@ This directory defines runnable tasks for the it-runner web UI.
 - `.it-runner/project.yaml`: Project entry (tasks/logs/cache dirs, env files)
 - `.it-runner/envs/000-defaults.env`: Default non-secret env (committable)
 - `.it-runner/envs/010-local.env`: Local overrides for this workspace
-- `.it-runner/env-templates/secrets.env.example`: Example secrets file (committable)
+- `.it-runner/env-templates/080-secret-local.env.example`: Example secrets file (committable)
 - `.it-runner/tasks/`: Task definitions (directory layout)
 
 ## Environment variables
@@ -16,6 +16,16 @@ This directory defines runnable tasks for the it-runner web UI.
 - `LEGACY_ROOT`: Legacy repos root (used by `syncapps.yaml:legacy_root` if you choose to reference it).
 - `DATA_ROOT`: External data root (for logs/cache if you choose to configure it).
 - `APP`: App id (e.g. `openclaw`) used by deploy/sync tasks.
+
+## Task-centric patterns in this repo
+
+- `deploy-app` / `deploy-single-app`
+  - default selectors: `.it-runner/tasks/<task>/envs/000-defaults.env`
+  - deploy target: `.it-runner/envsets/deploy-targets/<target>/000-base.env`
+  - app/runtime profile: `.it-runner/envsets/task-runtimes/<task>/<profile>/000-base.env`
+- `syncapps-app`
+  - default selector: `.it-runner/tasks/syncapps-app/envs/000-defaults.env`
+  - runtime profile: `.it-runner/envsets/task-runtimes/syncapps-app/<profile>/000-base.env`
 
 ## Task layout
 

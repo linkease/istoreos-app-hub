@@ -2,6 +2,12 @@ name: "deploy-app"
 description: "Deploy app code (LuCI/root/files) to remote test box (env APP)"
 tags: ["deploy", "remote", "debug"]
 version: "1"
+env:
+  autoDirs: ["envs"]
+  includeSets:
+    - "../../envsets/deploy-targets/${ISTOREOS_APP_HUB_DEPLOY_TARGET}"
+    - "../../envsets/task-runtimes/deploy-app/${ISTOREOS_APP_HUB_APP_PROFILE}"
+  required: ["ISTOREOS_APP_HUB_DEPLOY_TARGET", "ISTOREOS_APP_HUB_APP_PROFILE"]
 workspace:
   workdir: "."
 run:
